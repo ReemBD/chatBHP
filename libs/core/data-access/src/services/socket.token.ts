@@ -2,17 +2,14 @@ import { inject, InjectionToken } from '@angular/core';
 import { io } from 'socket.io-client';
 import { Observable } from 'rxjs';
 
-import { SOCKET_URL } from './api-url.token';
+import { ChatMessage } from '@chat-bhp/core/api-types';
 
-export type ReceiveMessageData = {
-    message: string;
-    username: string;
-};
+import { SOCKET_URL } from './api-url.token';
 
 export type SocketEvent = {
     event: 'receiveMessage';
-    data: ReceiveMessageData;
-};
+    data: ChatMessage;
+}
 
 export const generateUsername = () => {
     return `user_${Math.floor(Math.random() * 1000000)}`;
