@@ -2,6 +2,6 @@
 
 <ul>
     @for (message of messages(); track message.message) {
-        <li>{{ message.message }} - {{ message.username }}</li>
+        <bhp-chat-message [message]="message" [isSender]="message.username === 'User1'"></bhp-chat-message>
     }
 </ul>
