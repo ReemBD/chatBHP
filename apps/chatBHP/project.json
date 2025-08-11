@@ -2,7 +2,7 @@
   "name": "chatBHP",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "app",
+  "prefix": "bhp",
   "sourceRoot": "apps/chatBHP/src",
   "tags": [],
   "targets": {
