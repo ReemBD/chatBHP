@@ -6,6 +6,8 @@ import { OpenAIService } from '../openai.service';
 export class FrontendAgent {
     constructor(private readonly openaiService: OpenAIService) { }
 
+    private NULL_USER = 'null';
+
     private get instructions() {
         return {
             decision: `
@@ -15,7 +17,7 @@ export class FrontendAgent {
                 - If the user asks about React, hooks, JSX, or compares React to Angular, prefer Sauron.
                 - If the question is frontend related but not about Angular or React, prefer FED.
                 - If the question is not related to frontend in high probability, prefer null.
-                - Output only the chosen name: "Gandalf", "Sauron", "FED" or "null"
+                - Output only the chosen name: "Gandalf", "Sauron", "FED" or "${this.NULL_USER}"
             `,
             fed: 'You are a senior frontend developer who can help with any questions.',
             gandalf:
@@ -37,7 +39,7 @@ export class FrontendAgent {
 
         const user = decision.choices[0].message.content.trim().toLowerCase();
 
-        if (!JSON.parse(JSON.stringify(user))) return null;
+        if (user === this.NULL_USER) return null;
 
         return this.openaiService.createChatCompletion([
             { role: 'system', content: this.instructions[user] },
