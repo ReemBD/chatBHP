@@ -4,18 +4,21 @@ import {
   provideZoneChangeDetection,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
+import { API_URL } from '@chat-bhp/core/data-access';
+import { errorHandlingInterceptor } from '@chat-bhp/core/error-handler';
 
 import { appRoutes } from './app.routes';
-import { API_URL } from '@chat-bhp/core/data-access';
 import { environment } from './environments/environment';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([errorHandlingInterceptor])),
     { provide: API_URL, useValue: environment.API_URL },
   ],
 };

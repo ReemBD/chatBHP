@@ -15,10 +15,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@env/*": ["apps/chatBHP/src/app/environments/*"],
       "@chat-bhp/chat/chat-feature": ["libs/chat/chat-feature/src/index.ts"],
       "@chat-bhp/chat/data-access": ["libs/chat/data-access/src/index.ts"],
-      "@chat-bhp/core/data-access": ["libs/core/data-access/src/index.ts"]
+      "@chat-bhp/core/data-access": ["libs/core/data-access/src/index.ts"],
+      "@chat-bhp/core/error-handler": ["libs/core/error-handler/src/index.ts"],
+      "@env/*": ["apps/chatBHP/src/app/environments/*"]
     }
   },
   "exclude": ["node_modules", "tmp"]
