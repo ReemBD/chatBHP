@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { io } from 'socket.io-client';
+
+import { SOCKET_CLIENT } from '@chat-bhp/core/data-access';
 
 @Component({
   selector: 'bhp-chat-feature',
@@ -9,14 +10,12 @@ import { io } from 'socket.io-client';
   styleUrl: './chat.component.css',
 })
 export class Chat {
+  private readonly socket = inject(SOCKET_CLIENT);
+
   ngOnInit() {
-    const socket = io('http://localhost:3000');
-    socket.on('connect', () => {
-      console.log('Connected to server');
-    });
-    socket.on('message', (message: string) => {
+    this.socket.emit('sendMessage', { message: 'Hello from client!', username: 'User1' });
+    this.socket.messages$.subscribe((message) => {
       console.log(message);
     });
-    socket.emit('sendMessage', { message: 'Hello from client!', username: 'User1' });
   }
 }
