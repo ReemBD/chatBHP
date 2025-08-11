@@ -1,4 +1,4 @@
-<div class="flex items-center justify-center text-white">
-    <input type="text" class="w-full" placeholder="Type your message..." />
-    <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Send</button>
-</div>
+<form (submit)="$event.preventDefault(); send.emit()" class="flex items-center justify-center text-white">
+    <input type="text" class="w-full" placeholder="Type your message..." name="message" [(ngModel)]="message" />
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Send</button>
+</form>

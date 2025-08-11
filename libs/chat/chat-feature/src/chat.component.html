@@ -1,7 +1,6 @@
-<p>ChatFeature works!</p>
-
-<ul>
-    @for (message of messages(); track message.message) {
-        <bhp-chat-message [message]="message" [isSender]="message.username === 'User1'"></bhp-chat-message>
-    }
-</ul>
+<div class="h-screen flex flex-col max-w-4xl mx-auto bg-gray-800 shadow-lg rounded-lg">
+  <div class="flex-1 overflow-auto">
+    <bhp-chat-message-list [messages]="messages()"></bhp-chat-message-list>
+  </div>
+  <bhp-chat-input [(message)]="currentMessage" (send)="onSend()"></bhp-chat-input>
+</div>

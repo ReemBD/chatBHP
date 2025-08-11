@@ -1,5 +1,6 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, model, output } from '@angular/core';
 import { DatePipe } from '@angular/common';
+
 import { ChatMessage } from '../models/chat';
 
 @Component({
