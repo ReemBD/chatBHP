@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@chat-bhp/chat/chat-feature": ["libs/chat/chat-feature/src/index.ts"]
+      "@chat-bhp/chat/chat-feature": ["libs/chat/chat-feature/src/index.ts"],
+      "@chat-bhp/chat/data-access": ["libs/chat/data-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
