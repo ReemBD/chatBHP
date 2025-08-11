@@ -34,6 +34,7 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.0",
+    "@nestjs/websockets": "^11.1.6",
     "@nx/angular": "21.3.11",
     "@nx/eslint": "21.3.11",
     "@nx/eslint-plugin": "21.3.11",
