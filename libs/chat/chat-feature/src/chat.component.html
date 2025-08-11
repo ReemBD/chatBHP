@@ -1,1 +1,7 @@
 <p>ChatFeature works!</p>
+
+<ul>
+    @for (message of messages(); track message.message) {
+        <li>{{ message.message }} - {{ message.username }}</li>
+    }
+</ul>
