@@ -23,8 +23,6 @@ export class Chat {
   readonly messages = toSignal(this.messages$);
 
   ngOnInit() {
-    this.socket.emit('sendMessage', { message: 'Hello from client!', username: 'User1' });
-    this.socket.emit('sendMessage', { message: 'Hello from client!', username: 'User1' });
-    this.socket.emit('sendMessage', { message: 'Hello from client!', username: 'User1' });
+    this.socket.emit('sendMessage', { message: 'Yo, how to create an angular component', username: 'User1' });
   }
 }
