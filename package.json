@@ -30,6 +30,7 @@
     "@angular/compiler-cli": "~20.1.0",
     "@angular/language-service": "~20.1.0",
     "@eslint/js": "^9.8.0",
+    "@nestjs/config": "^4.0.2",
     "@nestjs/schematics": "^11.0.0",
     "@nestjs/testing": "^11.0.0",
     "@nx/angular": "21.3.11",
