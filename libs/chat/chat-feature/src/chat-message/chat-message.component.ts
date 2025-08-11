@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { DatePipe } from '@angular/common';
-
-import { ChatMessage } from '@chat-bhp/core/api-types';
+import { ChatMessage } from '../models/chat';
 
 @Component({
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -12,5 +11,4 @@ import { ChatMessage } from '@chat-bhp/core/api-types';
 })
 export class ChatMessageComponent {
     readonly message = input.required<ChatMessage>();
-    readonly isSender = input.required<boolean>();
 }
