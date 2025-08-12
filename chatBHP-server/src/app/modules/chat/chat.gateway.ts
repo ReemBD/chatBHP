@@ -21,12 +21,26 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleConnection(client: Socket, ...args: any[]): void {
     this.logger.log(`Client connected: ${client.id}`);
     
+    // Emit userJoin event to all clients
+    this.server.emit('userJoin', {
+      userId: client.id,
+      timestamp: new Date().toISOString(),
+      message: 'A new user joined the chat'
+    });
+    
     // Send chat history to newly connected client
     this.sendChatHistory(client);
   }
 
   handleDisconnect(client: Socket): void {
     this.logger.log(`Client disconnected: ${client.id}`);
+    
+    // Emit userLeave event to all clients
+    this.server.emit('userLeave', {
+      userId: client.id,
+      timestamp: new Date().toISOString(),
+      message: 'A user left the chat'
+    });
   }
 
   @SubscribeMessage('sendMessage')
