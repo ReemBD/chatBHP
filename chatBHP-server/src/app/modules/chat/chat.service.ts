@@ -69,7 +69,7 @@ export class ChatService {
       if (frontendResponse.user && frontendResponse.message) { 
         const aiChatMessage: ChatMessage = {
           message: frontendResponse.message,
-          username: 'AI Assistant',
+          username: frontendResponse.user,
           timestamp: new Date().toISOString(),
         };
         await this.saveMessage(aiChatMessage);

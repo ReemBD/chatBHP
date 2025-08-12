@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, InternalServerErrorException } from '@nestjs/common';
+import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
 import { ChatService } from './chat.service';
 
 @Controller('chat')

@@ -33,6 +33,13 @@ export class FrontendAgent {
         }
     }
 
+    private get names() {
+        return {
+            gandalf: 'Gandalf',
+            sauron: 'Sauron',
+            fed: 'Michael Scott',
+        }
+    }
     async respond(message: string) {
         const decision = await this.openaiService.createChatCompletion([
             { role: 'system', content: this.instructions.decision },
@@ -51,7 +58,7 @@ export class FrontendAgent {
         ]);
 
         return {
-            user,
+            user: this.names[user],
             message: response.choices[0].message.content
         };
     }
