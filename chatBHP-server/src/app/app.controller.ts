@@ -7,6 +7,8 @@ export class AppController {
 
   @Get()
   root(@Res() res: Response) {
-    res.sendFile(join(__dirname, '..', 'static', 'index.html'));
+    if (process.env.NODE_ENV === 'production') {
+      res.sendFile(join(__dirname, '..', 'static', 'index.html'));
+    }
   }
 }
