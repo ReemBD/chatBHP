@@ -20,18 +20,19 @@ export class Chat {
   private readonly socket$ = inject(SocketService);
   private readonly username = inject(USERNAME);
 
+  readonly messages$ = this.socket$
+    .getEvent('receiveMessage')
+    .pipe(
+      map(({ data }) => ({ ...data, isSender: this.username === data.username })),
+      scan((acc, curr) => [curr, ...acc], [] as Array<ChatMessage>),
+    );
+
   readonly messages = signal<ChatMessage[]>([]);
   readonly currentMessage = signal<string>('');
 
   constructor() {
-
-    this.socket$
-      .getEvent('receiveMessage')
-      .pipe(
-        map(({ data }) => ({ ...data, isSender: this.username === data.username })),
-        scan((acc, curr) => [curr, ...acc], [] as Array<ChatMessage>),
-        takeUntilDestroyed()
-      )
+    this.messages$
+      .pipe(takeUntilDestroyed())
       .subscribe(messages => this.messages.set(messages));
   }
 
