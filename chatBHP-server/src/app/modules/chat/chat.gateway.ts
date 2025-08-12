@@ -35,8 +35,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @ConnectedSocket() client: Socket,
   ): Promise<void> {
     try {
-      this.logger.log(`Received message from ${data.username}: ${data.message}`);
-
       // Broadcast the user message immediately
       const userMessage = {
         username: data.username,
@@ -56,10 +54,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       this.logger.error('Error handling message:', error);
       
       // Send error message to client
-      this.server.emit('receiveMessage', {
-        username: 'System',
-        message: 'Sorry, there was an error processing your message. Please try again.',
-        timestamp: new Date().toISOString(),
+      this.server.emit('messageError', {
+        details: {
+          username: data.username,
+        },
+        error: error.message,
       });
     }
   }
@@ -71,18 +70,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     } catch (error) {
       this.logger.error('Error sending chat history:', error);
       client.emit('error', { message: 'Failed to load chat history' });
-    }
-  }
-
-  @SubscribeMessage('clearChatHistory')
-  async handleClearChatHistory(@ConnectedSocket() client: Socket): Promise<void> {
-    try {
-      await this.chatService.clearChatHistory();
-      this.server.emit('chatHistoryCleared');
-      this.logger.log('Chat history cleared by client');
-    } catch (error) {
-      this.logger.error('Error clearing chat history:', error);
-      client.emit('error', { message: 'Failed to clear chat history' });
     }
   }
 

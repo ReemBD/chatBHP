@@ -23,7 +23,7 @@ export class ChatService {
       this.logger.log(`Message saved: ${message.username} - ${message.message.substring(0, 50)}...`);
     } catch (error) {
       this.logger.error('Failed to save message:', error);
-      // Don't throw - we don't want to crash the app if file operations fail
+      throw error;
     }
   }
 
@@ -106,15 +106,6 @@ export class ChatService {
       await fs.writeFile(this.chatHistoryFile, data, 'utf-8');
     } catch (error) {
       this.logger.error('Failed to save chat history to file:', error);
-      throw error;
-    }
-  }
-
-  async clearChatHistory(): Promise<void> {
-    try {
-      await this.saveChatHistory([]);
-    } catch (error) {
-      this.logger.error('Failed to clear chat history:', error);
       throw error;
     }
   }
