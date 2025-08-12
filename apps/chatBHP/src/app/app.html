@@ -1,8 +1,17 @@
-<router-outlet></router-outlet>
+<div class="grid grid-rows-[auto_1fr] h-screen">
+    <bhp-header></bhp-header>
+
+    <!-- Main Content -->
+    <main class="flex-1 mt-16 h-[calc(100vh-64px)] overflow-y-auto">
+        <router-outlet></router-outlet>
+    </main>
+</div>
+
+<!-- Toaster Container -->
 <div class="absolute inset-0 pointer-events-none flex flex-col items-end p-3">
     @for (item of toasterService | async; track item.content) {
-        <bhp-toaster [observer]="item.observer">
-            {{item.content}}
-        </bhp-toaster>
+    <bhp-toaster [observer]="item.observer">
+        {{item.content}}
+    </bhp-toaster>
     }
 </div>

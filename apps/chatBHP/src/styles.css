@@ -14,7 +14,7 @@
 }
 
 body {
-    @apply overflow-clip h-screen bg-gray-800;
+    @apply overflow-clip h-screen bg-gray-800 flex flex-col; 
 }
 
 ::-webkit-scrollbar {
