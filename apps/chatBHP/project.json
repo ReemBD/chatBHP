@@ -10,7 +10,7 @@
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/chatBHP",
+        "outputPath": "chatBHP-server/static",
         "browser": "apps/chatBHP/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/chatBHP/tsconfig.app.json",
