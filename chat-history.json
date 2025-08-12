@@ -1,0 +1,17 @@
+[
+  {
+    "message": "Hello! How can I help you today?",
+    "username": "AI Assistant",
+    "timestamp": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "message": "Hi! I'm testing the chat system.",
+    "username": "User1",
+    "timestamp": "2024-01-01T00:01:00.000Z"
+  },
+  {
+    "message": "Great! The chat system is working well. Is there anything specific you'd like to know?",
+    "username": "AI Assistant",
+    "timestamp": "2024-01-01T00:01:30.000Z"
+  }
+]
