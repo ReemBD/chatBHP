@@ -21,10 +21,12 @@ export class Chat {
   private readonly socket$ = inject(SocketService);
   private readonly username = inject(USERNAME);
 
+  readonly error$ = this.chatService.error$;
   readonly messages = signal<ChatMessage[]>([]);
   readonly currentMessage = signal<string>('');
 
   constructor() {
+    this.error$.subscribe(error => console.error(error));
     this.chatService.chat$
       .pipe(takeUntilDestroyed())
       .subscribe(chat => this.messages.set(chat))

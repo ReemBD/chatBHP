@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ChatMessage, SocketEvent } from '@chat-bhp/core/api-types';
 import { USERNAME } from '@chat-bhp/chat/chat-feature'
 import { ApiService, SocketService } from '@chat-bhp/core/data-access';
-import { catchError, map, of, scan, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { catchError, ignoreElements, map, of, retry, scan, shareReplay, startWith, switchMap, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +13,19 @@ export class ChatService {
   private readonly api = inject(ApiService);
   private readonly BASE_URL = '/chat';
 
-  readonly chat$ = this.loadHistory().pipe(
+  private readonly history$ = this.loadHistory().pipe(
+    retry(3),
+    shareReplay(1)
+  );
+
+  readonly error$ = this.history$.pipe(
+    ignoreElements(),
+    catchError((error) => {
+      return of(error);
+    }),
+  );
+
+  readonly chat$ = this.history$.pipe(
     map(history => history.map(message => ({ ...message, isSender: this.username === message.username }))),
     switchMap((history) => this.socket$
       .getEvent('receiveMessage')
@@ -23,15 +35,9 @@ export class ChatService {
         scan((acc, curr) => [curr, ...acc], history),
       )
     ),
-    shareReplay(1),
   );
 
   loadHistory() {
-    return this.api.get<ChatMessage[]>(`${this.BASE_URL}/history`).pipe(
-      catchError((error) => {
-        console.error(error);
-        return of([] as ChatMessage[]);
-      }),
-    );
+    return this.api.get<ChatMessage[]>(`${this.BASE_URL}/history`);
   }
 }
