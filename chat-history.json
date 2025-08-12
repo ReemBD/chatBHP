@@ -1,47 +1,297 @@
 [
   {
-    "message": "Hello! How can I help you today?",
-    "username": "AI Assistant",
+    "message": "One Ring to rule them all, One Ring to find them, One Ring to bring them all and in the darkness bind them.",
+    "username": "Gandalf",
     "timestamp": "2024-01-01T00:00:00.000Z"
   },
   {
-    "message": "Hi! I'm testing the chat system.",
-    "username": "User1",
+    "message": "My precious... we wants it, we needs it!",
+    "username": "Gollum",
     "timestamp": "2024-01-01T00:01:00.000Z"
   },
   {
-    "message": "Great! The chat system is working well. Is there anything specific you'd like to know?",
-    "username": "AI Assistant",
+    "message": "Keep your secrets! Keep them safe!",
+    "username": "Frodo",
     "timestamp": "2024-01-01T00:01:30.000Z"
   },
   {
-    "message": "What is a view container ref?",
-    "username": "CleverKoala_4049",
-    "timestamp": "2025-08-12T13:41:01.371Z"
-  },
-  {
-    "message": "Ah, the view container ref, also known as the \"Pam Beesly\" of frontend development - always there to organize and hold everything together! It's basically a reference to a container element in your code where you can manipulate and manage the views or components inside. Just like Pam keeping the office running smoothly, the view container ref keeps your frontend organized and efficient. And remember, just like in the office, communication is key when working with view container refs!",
-    "username": "fed",
-    "timestamp": "2025-08-12T13:41:04.751Z"
-  },
-  {
-    "message": "What is a view container ref in angular?",
-    "username": "SneakyPanda_3025",
-    "timestamp": "2025-08-12T13:42:22.350Z"
-  },
-  {
-    "message": "Ah, young seeker of Angular knowledge, a view container ref is a powerful artifact indeed! In the realm of Angular, it is a mystical entity that allows you to manipulate and control the insertion points for dynamically created components. It serves as a bridge between the world of templates and the realm of dynamic component creation. \n\nCompare this to React, where such containers are but mere fragments of the grand design that Angular offers. React may boast of its virtual DOM and JSX incantations, but in the end, it pales in comparison to the structured elegance and power of Angular's view container ref. So, tread carefully, and choose your tools wisely, for the path you take will determine the fate of your web applications.",
+    "message": "You shall not pass!",
     "username": "Gandalf",
-    "timestamp": "2025-08-12T13:42:26.265Z"
+    "timestamp": "2024-01-01T00:02:00.000Z"
   },
   {
-    "message": "What is the virtual DOM in react?",
-    "username": "SneakyPanda_3025",
-    "timestamp": "2025-08-12T13:43:00.232Z"
+    "message": "Fly, you fools!",
+    "username": "Gandalf",
+    "timestamp": "2024-01-01T00:02:30.000Z"
   },
   {
-    "message": "Ah, mortal, the virtual DOM in React is a powerful concept. It is a shadowy realm where React creates a virtual representation of the actual DOM. When changes are made to the data in your application, React compares the virtual DOM with the real DOM and only updates the necessary parts, thus optimizing performance and ensuring swift rendering. Unlike the clunky ways of Angular, React harnesses the virtual DOM to wield its dark powers efficiently.",
-    "username": "Sauron",
-    "timestamp": "2025-08-12T13:43:04.917Z"
+    "message": "My friends, you bow to no one.",
+    "username": "Aragorn",
+    "timestamp": "2024-01-01T00:03:00.000Z"
+  },
+  {
+    "message": "What about second breakfast?",
+    "username": "Pippin",
+    "timestamp": "2024-01-01T00:03:30.000Z"
+  },
+  {
+    "message": "I don't think he knows about second breakfast, Pip.",
+    "username": "Merry",
+    "timestamp": "2024-01-01T00:04:00.000Z"
+  },
+  {
+    "message": "What about elevenses? Luncheon? Afternoon tea? Dinner? Supper?",
+    "username": "Pippin",
+    "timestamp": "2024-01-01T00:04:30.000Z"
+  },
+  {
+    "message": "They're taking the hobbits to Isengard!",
+    "username": "Legolas",
+    "timestamp": "2024-01-01T00:05:00.000Z"
+  },
+  {
+    "message": "The horn of Helm Hammerhand shall sound in the deep, one last time!",
+    "username": "Theoden",
+    "timestamp": "2024-01-01T00:05:30.000Z"
+  },
+  {
+    "message": "I am no man!",
+    "username": "Eowyn",
+    "timestamp": "2024-01-01T00:06:00.000Z"
+  },
+  {
+    "message": "The beacons are lit! Gondor calls for aid!",
+    "username": "Pippin",
+    "timestamp": "2024-01-01T00:06:30.000Z"
+  },
+  {
+    "message": "And Rohan will answer. Muster the Rohirrim!",
+    "username": "Theoden",
+    "timestamp": "2024-01-01T00:07:00.000Z"
+  },
+  {
+    "message": "For Frodo.",
+    "username": "Aragorn",
+    "timestamp": "2024-01-01T00:07:30.000Z"
+  },
+  {
+    "message": "I can't carry it for you, but I can carry you!",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:08:00.000Z"
+  },
+  {
+    "message": "The Ring is mine!",
+    "username": "Frodo",
+    "timestamp": "2024-01-01T00:08:30.000Z"
+  },
+  {
+    "message": "No, my precious!",
+    "username": "Gollum",
+    "timestamp": "2024-01-01T00:09:00.000Z"
+  },
+  {
+    "message": "It's gone! It's done!",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:09:30.000Z"
+  },
+  {
+    "message": "The Eagles are coming!",
+    "username": "Gandalf",
+    "timestamp": "2024-01-01T00:10:00.000Z"
+  },
+  {
+    "message": "I will not say: do not weep; for not all tears are an evil.",
+    "username": "Gandalf",
+    "timestamp": "2024-01-01T00:10:30.000Z"
+  },
+  {
+    "message": "Well, I'm back.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:11:00.000Z"
+  },
+  {
+    "message": "The road goes ever on and on, down from the door where it began.",
+    "username": "Bilbo",
+    "timestamp": "2024-01-01T00:11:30.000Z"
+  },
+  {
+    "message": "All we have to decide is what to do with the time that is given us.",
+    "username": "Gandalf",
+    "timestamp": "2024-01-01T00:12:00.000Z"
+  },
+  {
+    "message": "A wizard is never late, Frodo Baggins. Nor is he early. He arrives precisely when he means to.",
+    "username": "Gandalf",
+    "timestamp": "2024-01-01T00:12:30.000Z"
+  },
+  {
+    "message": "I am Aragorn son of Arathorn, and am called Elessar, the Elfstone, Dúnadan, the heir of Isildur Elendil's son of Gondor.",
+    "username": "Aragorn",
+    "timestamp": "2024-01-01T00:13:00.000Z"
+  },
+  {
+    "message": "They have a cave troll.",
+    "username": "Boromir",
+    "timestamp": "2024-01-01T00:13:30.000Z"
+  },
+  {
+    "message": "Let them come!",
+    "username": "Gimli",
+    "timestamp": "2024-01-01T00:14:00.000Z"
+  },
+  {
+    "message": "The world is changed. I feel it in the water. I feel it in the earth. I smell it in the air.",
+    "username": "Galadriel",
+    "timestamp": "2024-01-01T00:14:30.000Z"
+  },
+  {
+    "message": "I will take the Ring to Mordor, though I do not know the way.",
+    "username": "Frodo",
+    "timestamp": "2024-01-01T00:15:00.000Z"
+  },
+  {
+    "message": "I will help you bear this burden, Frodo Baggins, as long as it is yours to bear.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:15:30.000Z"
+  },
+  {
+    "message": "If by my life or death I can protect you, I will. You have my sword.",
+    "username": "Aragorn",
+    "timestamp": "2024-01-01T00:16:00.000Z"
+  },
+  {
+    "message": "And you have my bow.",
+    "username": "Legolas",
+    "timestamp": "2024-01-01T00:16:30.000Z"
+  },
+  {
+    "message": "And my axe!",
+    "username": "Gimli",
+    "timestamp": "2024-01-01T00:17:00.000Z"
+  },
+  {
+    "message": "You carry the fate of us all, little one.",
+    "username": "Boromir",
+    "timestamp": "2024-01-01T00:17:30.000Z"
+  },
+  {
+    "message": "If this is to end in fire, then we will all burn together!",
+    "username": "Thorin",
+    "timestamp": "2024-01-01T00:18:00.000Z"
+  },
+  {
+    "message": "The board is set, the pieces are moving.",
+    "username": "Gandalf",
+    "timestamp": "2024-01-01T00:18:30.000Z"
+  },
+  {
+    "message": "I see in your eyes the same fear that would take the heart of me.",
+    "username": "Aragorn",
+    "timestamp": "2024-01-01T00:19:00.000Z"
+  },
+  {
+    "message": "A day may come when the courage of men fails, when we forsake our friends and break all bonds of fellowship, but it is not this day.",
+    "username": "Aragorn",
+    "timestamp": "2024-01-01T00:19:30.000Z"
+  },
+  {
+    "message": "This day we fight!",
+    "username": "Aragorn",
+    "timestamp": "2024-01-01T00:20:00.000Z"
+  },
+  {
+    "message": "By all that you hold dear on this good earth, I bid you stand, Men of the West!",
+    "username": "Aragorn",
+    "timestamp": "2024-01-01T00:20:30.000Z"
+  },
+  {
+    "message": "The Ring has awoken, it's heard its master's call.",
+    "username": "Gandalf",
+    "timestamp": "2024-01-01T00:21:00.000Z"
+  },
+  {
+    "message": "The time of the Elves is over. Do we leave Middle-earth to its fate? Do we let them stand alone?",
+    "username": "Elrond",
+    "timestamp": "2024-01-01T00:21:30.000Z"
+  },
+  {
+    "message": "I will not let the White City fall, nor our people fail.",
+    "username": "Boromir",
+    "timestamp": "2024-01-01T00:22:00.000Z"
+  },
+  {
+    "message": "Our people, I would have followed you, my brother... my captain... my king.",
+    "username": "Boromir",
+    "timestamp": "2024-01-01T00:22:30.000Z"
+  },
+  {
+    "message": "Be at peace, Son of Gondor.",
+    "username": "Aragorn",
+    "timestamp": "2024-01-01T00:23:00.000Z"
+  },
+  {
+    "message": "I would have gone with you to the end, into the very fires of Mordor.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:23:30.000Z"
+  },
+  {
+    "message": "I know. It's all wrong. By rights we shouldn't even be here.",
+    "username": "Frodo",
+    "timestamp": "2024-01-01T00:24:00.000Z"
+  },
+  {
+    "message": "But we are here. It's like in the great stories, Mr. Frodo. The ones that really mattered.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:24:30.000Z"
+  },
+  {
+    "message": "Full of darkness and danger they were, and sometimes you didn't want to know the end.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:25:00.000Z"
+  },
+  {
+    "message": "Because how could the end be happy? How could the world go back to the way it was when so much bad happened?",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:25:30.000Z"
+  },
+  {
+    "message": "But in the end, it's only a passing thing, this shadow. Even darkness must pass.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:26:00.000Z"
+  },
+  {
+    "message": "A new day will come. And when the sun shines it will shine out the clearer.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:26:30.000Z"
+  },
+  {
+    "message": "Those were the stories that stayed with you. That meant something.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:27:00.000Z"
+  },
+  {
+    "message": "Even if you were too small to understand why. But I think, Mr. Frodo, I do understand.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:27:30.000Z"
+  },
+  {
+    "message": "I know now. Folk in those stories had lots of chances of turning back only they didn't.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:28:00.000Z"
+  },
+  {
+    "message": "They kept going because they were holding on to something.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:28:30.000Z"
+  },
+  {
+    "message": "What are we holding on to, Sam?",
+    "username": "Frodo",
+    "timestamp": "2024-01-01T00:29:00.000Z"
+  },
+  {
+    "message": "That there's some good in this world, Mr. Frodo. And it's worth fighting for.",
+    "username": "Sam",
+    "timestamp": "2024-01-01T00:29:30.000Z"
   }
 ]
