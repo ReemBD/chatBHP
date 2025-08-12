@@ -11,6 +11,8 @@ import { errorHandlingInterceptor } from '@chat-bhp/core/error-handler';
 
 import { appRoutes } from './app.routes';
 import { environment } from './environments/environment';
+import { getRandomUsername } from './utils/getRandomUsername';
+import { USERNAME } from '@chat-bhp/chat/chat-feature';
 
 
 export const appConfig: ApplicationConfig = {
@@ -21,5 +23,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withInterceptors([errorHandlingInterceptor])),
     { provide: API_URL, useValue: environment.API_URL },
     { provide: SOCKET_URL, useValue: environment.SOCKET_URL },
+    { provide: USERNAME, useFactory: () => getRandomUsername() },
   ],
 };
