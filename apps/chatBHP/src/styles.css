@@ -2,6 +2,17 @@
 @import '../../../libs/ui/button/src/lib/button/button.css';
 @import '../../../libs/ui/input/src/lib/input/input.css';
 
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
 body {
     @apply overflow-clip h-screen bg-gray-800;
 }

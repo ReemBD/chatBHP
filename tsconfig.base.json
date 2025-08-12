@@ -20,8 +20,9 @@
       "@chat-bhp/core/api-types": ["libs/core/api-types/src/index.ts"],
       "@chat-bhp/core/data-access": ["libs/core/data-access/src/index.ts"],
       "@chat-bhp/core/error-handler": ["libs/core/error-handler/src/index.ts"],
-      "@chat-bhp/ui/input": ["libs/ui/input/src/index.ts"],
+      "@chat-bhp/ui/toaster": ["libs/ui/toaster/src/index.ts"],
       "@chat-bhp/ui/button": ["libs/ui/button/src/index.ts"],
+      "@chat-bhp/ui/input": ["libs/ui/input/src/index.ts"],
       "@env/*": ["apps/chatBHP/src/app/environments/*"]
     }
   },
