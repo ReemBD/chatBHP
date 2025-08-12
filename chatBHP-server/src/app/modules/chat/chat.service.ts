@@ -3,13 +3,17 @@ import { OpenAIService } from './openai.service';
 import { ChatMessage } from '@chat-bhp/core/api-types';
 import * as fs from 'fs/promises';
 import * as path from 'path';
+import { FrontendAgent } from './agents/frontend.agent';
 
 @Injectable()
 export class ChatService {
   private readonly logger = new Logger(ChatService.name);
   private readonly chatHistoryFile = path.join(process.cwd(), 'chat-history.json');
 
-  constructor(private readonly openaiService: OpenAIService) {}
+  constructor(
+    private readonly openaiService: OpenAIService,
+    private readonly frontendAgent: FrontendAgent,
+  ) {}
 
   async saveMessage(message: ChatMessage): Promise<void> {
     try {
@@ -50,7 +54,7 @@ export class ChatService {
     }
   }
 
-  async processUserMessage(userMessage: string, username: string): Promise<ChatMessage> {
+  async processUserMessage(userMessage: string, username: string): Promise<ChatMessage | void> {
     try {
       // Save user message
       const userChatMessage: ChatMessage = {
@@ -60,18 +64,17 @@ export class ChatService {
       };
       await this.saveMessage(userChatMessage);
 
-      // Get AI response
-      const aiResponse = await this.getChatResponse(userMessage);
+      const frontendResponse = await this.frontendAgent.respond(userMessage);
 
-      // Save AI response
-      const aiChatMessage: ChatMessage = {
-        message: aiResponse,
-        username: 'AI Assistant',
-        timestamp: new Date().toISOString(),
-      };
-      await this.saveMessage(aiChatMessage);
-
-      return aiChatMessage;
+      if (frontendResponse) { 
+        const aiChatMessage: ChatMessage = {
+          message: frontendResponse.choices[0].message.content,
+          username: 'AI Assistant',
+          timestamp: new Date().toISOString(),
+        };
+        await this.saveMessage(aiChatMessage);
+        return aiChatMessage;
+      }
     } catch (error) {
       this.logger.error('Failed to process user message:', error);
       // Return a fallback response
@@ -110,7 +113,6 @@ export class ChatService {
   async clearChatHistory(): Promise<void> {
     try {
       await this.saveChatHistory([]);
-      this.logger.log('Chat history cleared successfully');
     } catch (error) {
       this.logger.error('Failed to clear chat history:', error);
       throw error;

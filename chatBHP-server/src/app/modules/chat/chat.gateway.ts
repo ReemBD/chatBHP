@@ -49,7 +49,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
       const aiResponse = await this.chatService.processUserMessage(data.message, data.username);
 
       // Broadcast the AI response
-      this.server.emit('receiveMessage', aiResponse);
+      aiResponse && this.server.emit('receiveMessage', aiResponse);
 
       this.logger.log(`AI response sent for message from ${data.username}`);
     } catch (error) {
