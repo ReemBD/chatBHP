@@ -1,7 +1,6 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 import { ChatMessageComponent } from '../chat-message/chat-message.component';
-
 import { ChatMessage } from '../models/chat';
 
 @Component({

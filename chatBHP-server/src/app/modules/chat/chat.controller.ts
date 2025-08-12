@@ -1,4 +1,5 @@
 import { Controller, Get, InternalServerErrorException } from '@nestjs/common';
+
 import { ChatService } from './chat.service';
 
 @Controller('chat')

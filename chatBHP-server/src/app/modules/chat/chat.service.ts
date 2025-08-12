@@ -1,8 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { OpenAIService } from './openai.service';
-import { ChatMessage } from '@chat-bhp/core/api-types';
-import * as fs from 'fs/promises';
 import * as path from 'path';
+import * as fs from 'fs/promises';
+
+import { ChatMessage } from '@chat-bhp/core/api-types';
+
+import { OpenAIService } from './openai.service';
 import { FrontendAgent } from './agents/frontend.agent';
 
 @Injectable()

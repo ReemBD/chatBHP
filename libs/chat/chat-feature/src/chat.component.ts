@@ -1,6 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { concatMap } from 'rxjs';
 
 import { SocketService } from '@chat-bhp/core/data-access';
 import { USERNAME } from '@chat-bhp/chat/chat-feature';
@@ -10,7 +11,6 @@ import { ToasterService } from '@chat-bhp/ui/toaster';
 import { ChatMessage } from './models/chat';
 import { ChatMessageListComponent } from './chat-message-list/chat-message-list.component';
 import { ChatInputComponent } from './chat-input/chat-input.component';
-import { concatMap } from 'rxjs';
 
 @Component({
   selector: 'bhp-chat-feature',

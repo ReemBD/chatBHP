@@ -21,7 +21,7 @@ export class ToasterComponent<T> {
   readonly close$ = timer(3000).pipe(
     takeUntil(this.mouseenter$),
     repeatWhen(() => this.mouseleave$),
-    tap(this.close.bind(this))
+    tap(() => this.close())
   );
 
   close() {
