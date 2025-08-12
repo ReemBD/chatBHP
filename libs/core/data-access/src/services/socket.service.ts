@@ -1,11 +1,10 @@
-import { Inject, Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { filter, Observable } from "rxjs";
 import { io, Socket } from "socket.io-client";
 
-import { SocketEvent, SocketEventKeys } from "../models/socket-events";
+import { SocketEvent, SocketEventKeys } from "@chat-bhp/core/api-types";
 
 import { SOCKET_URL } from "./api-url.token";
-
 
 
 @Injectable({
@@ -14,9 +13,8 @@ import { SOCKET_URL } from "./api-url.token";
 export class SocketService extends Observable<SocketEvent> {
     readonly socket: Socket;
 
-    constructor(
-        @Inject(SOCKET_URL) readonly url: string,
-    ) {
+    constructor() {
+        const url = inject(SOCKET_URL);
         const socket = io(url);
 
         super((subscriber) => {

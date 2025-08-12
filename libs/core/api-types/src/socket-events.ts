@@ -1,4 +1,4 @@
-import { ChatMessage } from "@chat-bhp/core/api-types";
+import { ChatMessage } from "./chat";
 
 export type MessageError = {
     details: {
