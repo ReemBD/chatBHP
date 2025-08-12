@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import '../../../libs/ui/button/src/lib/button/button.css';
 
 body {
     @apply overflow-clip h-screen bg-gray-800;

@@ -20,7 +20,10 @@
             "input": "apps/chatBHP/public"
           }
         ],
-        "styles": ["apps/chatBHP/src/styles.css"]
+        "styles": [
+          "apps/chatBHP/src/styles.css",
+          "libs/ui/button/src/lib/button/button.css"
+        ]
       },
       "configurations": {
         "production": {
