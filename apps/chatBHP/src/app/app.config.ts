@@ -10,7 +10,7 @@ import { API_URL, SOCKET_URL } from '@chat-bhp/core/data-access';
 import { errorHandlingInterceptor } from '@chat-bhp/core/error-handler';
 
 import { appRoutes } from './app.routes';
-import { environment } from './environments/environment';
+import { environment } from '../environments/environment';
 import { getRandomUsername } from './utils/getRandomUsername';
 import { USERNAME } from '@chat-bhp/chat/chat-feature';
 
