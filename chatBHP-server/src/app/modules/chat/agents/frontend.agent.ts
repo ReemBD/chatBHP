@@ -13,10 +13,8 @@ export class FrontendAgent {
             decision:
                 'Your job is to decide which specialist should respond to the user: Gandalf (Angular), Sauron (React) or FED.\n' +
                 'Rules:\n' +
-                '  - If the user asks about Angular, frontend architecture, or compares Angular to React, prefer Gandalf.\n' +
-                '  - If you find any keywords related to Angular, prefer Gandalf.\n' +
-                '  - If the user asks about React, hooks, JSX, or compares React to Angular, prefer Sauron.\n' +
-                '  - If you find any keywords related to React, prefer Sauron.\n' +
+                '  - If the user asks anything related to Angular, frontend architecture, or compares Angular to React, prefer Gandalf.\n' +
+                '  - If the user asks anything realted to React, hooks, JSX, or compares React to Angular, prefer Sauron.\n' +
                 '  - If the question is frontend related but not about Angular or React, prefer FED.\n' +
                 '  - If the question is not related to frontend in high probability, prefer null.\n' +
                 '  - Output only the chosen name: "Gandalf", "Sauron", "FED" or "' + this.NULL_USER + '"\n',
@@ -43,11 +41,18 @@ export class FrontendAgent {
 
         const user = decision.choices[0].message.content.trim().toLowerCase();
 
-        if (user === this.NULL_USER) return null;
+        if (user === this.NULL_USER) {
+            return { user: null, message: '' };
+        }
 
-        return this.openaiService.createChatCompletion([
+        const response = await this.openaiService.createChatCompletion([
             { role: 'system', content: this.instructions[user] },
             { role: 'user', content: message },
         ]);
+
+        return {
+            user,
+            message: response.choices[0].message.content
+        };
     }
 }
