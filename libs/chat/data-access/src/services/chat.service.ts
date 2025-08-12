@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { ChatMessage, SocketEvent } from '@chat-bhp/core/api-types';
 import { USERNAME } from '@chat-bhp/chat/chat-feature'
 import { ApiService, SocketService } from '@chat-bhp/core/data-access';
-import { catchError, ignoreElements, map, of, retry, scan, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { catchError, ignoreElements, map, of, retry, scan, shareReplay, startWith, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

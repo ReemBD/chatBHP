@@ -1,1 +1,8 @@
 <router-outlet></router-outlet>
+<div class="absolute inset-0 pointer-events-none flex flex-col items-end p-3">
+    @for (item of toasterService | async; track item.content) {
+        <bhp-toaster [observer]="item.observer">
+            {{item.content}}
+        </bhp-toaster>
+    }
+</div>

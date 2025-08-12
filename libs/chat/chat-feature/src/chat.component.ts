@@ -5,10 +5,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { SocketService } from '@chat-bhp/core/data-access';
 import { USERNAME } from '@chat-bhp/chat/chat-feature';
 import { ChatService } from '@chat-bhp/chat/data-access';
+import { ToasterService } from '@chat-bhp/ui/toaster';
 
 import { ChatMessage } from './models/chat';
 import { ChatMessageListComponent } from './chat-message-list/chat-message-list.component';
 import { ChatInputComponent } from './chat-input/chat-input.component';
+import { concatMap } from 'rxjs';
 
 @Component({
   selector: 'bhp-chat-feature',
@@ -17,16 +19,23 @@ import { ChatInputComponent } from './chat-input/chat-input.component';
   styleUrl: './chat.component.css',
 })
 export class Chat {
+  readonly toasterService = inject(ToasterService);
   private readonly chatService = inject(ChatService)
   private readonly socket$ = inject(SocketService);
   private readonly username = inject(USERNAME);
 
   readonly error$ = this.chatService.error$;
+
   readonly messages = signal<ChatMessage[]>([]);
   readonly currentMessage = signal<string>('');
 
   constructor() {
-    this.error$.subscribe(error => console.error(error));
+    this.error$
+      .pipe(
+        concatMap(error => this.toasterService.show(error.message)),
+        takeUntilDestroyed()
+      )
+      .subscribe();
     this.chatService.chat$
       .pipe(takeUntilDestroyed())
       .subscribe(chat => this.messages.set(chat))
