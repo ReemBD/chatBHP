@@ -1,10 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { map, scan } from 'rxjs';
 
 import { SocketService } from '@chat-bhp/core/data-access';
 import { USERNAME } from '@chat-bhp/chat/chat-feature';
+import { ChatService } from '@chat-bhp/chat/data-access';
 
 import { ChatMessage } from './models/chat';
 import { ChatMessageListComponent } from './chat-message-list/chat-message-list.component';
@@ -17,30 +17,24 @@ import { ChatInputComponent } from './chat-input/chat-input.component';
   styleUrl: './chat.component.css',
 })
 export class Chat {
+  private readonly chatService = inject(ChatService)
   private readonly socket$ = inject(SocketService);
   private readonly username = inject(USERNAME);
-
-  readonly messages$ = this.socket$
-    .getEvent('receiveMessage')
-    .pipe(
-      map(({ data }) => ({ ...data, isSender: this.username === data.username })),
-      scan((acc, curr) => [curr, ...acc], [] as Array<ChatMessage>),
-    );
 
   readonly messages = signal<ChatMessage[]>([]);
   readonly currentMessage = signal<string>('');
 
   constructor() {
-    this.messages$
+    this.chatService.chat$
       .pipe(takeUntilDestroyed())
-      .subscribe(messages => this.messages.set(messages));
+      .subscribe(chat => this.messages.set(chat))
   }
 
   onSend() {
     const tempMessage: ChatMessage = {
       message: this.currentMessage(),
       timestamp: new Date().toISOString(),
-      username: 'me',
+      username: this.username,
       isSender: true,
     }
     this.messages.update(messages => [tempMessage, ...messages]);
