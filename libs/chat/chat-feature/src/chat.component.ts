@@ -1,6 +1,7 @@
-import { afterRenderEffect, Component, inject, signal, viewChild } from '@angular/core';
+import { afterRenderEffect, Component, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { filter, timer } from 'rxjs';
 
 import { ChatService } from '@chat-bhp/chat/data-access';
 import { ToasterService } from '@chat-bhp/ui/toaster';
@@ -8,15 +9,17 @@ import { ToasterService } from '@chat-bhp/ui/toaster';
 import { ChatMessage } from './models/chat';
 import { ChatMessageListComponent } from './chat-message-list/chat-message-list.component';
 import { ChatInputComponent } from './chat-input/chat-input.component';
+import { USERNAME } from './tokens/username.token';
 
 @Component({
   selector: 'bhp-chat',
   imports: [CommonModule, ChatMessageListComponent, ChatInputComponent],
   templateUrl: './chat.component.html',
 })
-export class Chat {
+export class Chat implements OnInit, OnDestroy {
   readonly toasterService = inject(ToasterService);
   private readonly chatService = inject(ChatService);
+  private readonly username = inject(USERNAME);
 
   private readonly messageList = viewChild<ChatMessageListComponent>(ChatMessageListComponent);
 
@@ -32,7 +35,10 @@ export class Chat {
       .subscribe((error) => this.toasterService.show(error).subscribe());
 
     this.chatService.connect$
-      .pipe(takeUntilDestroyed())
+      .pipe(
+        takeUntilDestroyed(),
+        filter(event => event.data.username !== this.username)
+      )
       .subscribe(event => {
         const message = event.type === 'join' ? `${event.data.username} joined the chat` : `${event.data.username} left the chat`;
         this.toasterService.show(message).subscribe()
@@ -50,7 +56,7 @@ export class Chat {
   }
 
   ngOnInit() {
-    this.chatService.joinChat();
+    timer(2000).subscribe(() => this.chatService.joinChat());
   }
 
   ngOnDestroy() {
