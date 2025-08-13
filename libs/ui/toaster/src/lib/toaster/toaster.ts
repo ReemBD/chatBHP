@@ -18,6 +18,9 @@ export class ToasterComponent<T> {
 
   readonly mouseleave$ = fromEvent(this.elementRef.nativeElement, "mouseleave");
 
+  /**
+   * Close the toaster after 3 seconds unless user hovers over it.
+   */
   readonly close$ = timer(3000).pipe(
     takeUntil(this.mouseenter$),
     repeatWhen(() => this.mouseleave$),
