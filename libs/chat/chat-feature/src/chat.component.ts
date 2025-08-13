@@ -18,7 +18,7 @@ import { ChatInputComponent } from './chat-input/chat-input.component';
   templateUrl: './chat.component.html',
 })
 export class Chat {
-  private readonly toasterService = inject(ToasterService);
+  readonly toasterService = inject(ToasterService);
   private readonly chatService = inject(ChatService)
   
   readonly messages = signal<ChatMessage[]>([]);
