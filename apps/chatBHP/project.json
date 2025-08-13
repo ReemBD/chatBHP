@@ -10,7 +10,7 @@
       "executor": "@angular/build:application",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "chatBHP-server/static",
+        "outputPath": "dist/chatBHP-server/static",
         "browser": "apps/chatBHP/src/main.ts",
         "polyfills": ["zone.js"],
         "tsConfig": "apps/chatBHP/tsconfig.app.json",
@@ -81,7 +81,7 @@
       "executor": "@nx/web:file-server",
       "options": {
         "buildTarget": "chatBHP:build",
-        "staticFilePath": "dist/apps/chatBHP/browser",
+        "staticFilePath": "dist/chatBHP-server/static",
         "spa": true
       }
     }

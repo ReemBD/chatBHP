@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "build:all": "npx nx run chatBHP:build --configuration production && npx nx run chatBHP-server:build && npm run copy-static",
+    "build:all": "npx nx run chatBHP-server:build && npx nx run chatBHP:build --configuration production",
     "copy-static": "mkdir -p dist/chatBHP-server/static && cp -R dist/apps/chatBHP/browser/* dist/chatBHP-server/static/ && echo Copied Angular build to Nest static"
   },
   "private": true,
