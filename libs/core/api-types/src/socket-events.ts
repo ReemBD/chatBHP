@@ -9,14 +9,12 @@ export type MessageError = {
 
 export type UserJoin = {
     userId: string;
-    timestamp: string;
-    message: string;
+    username: string;
 }
 
 export type UserLeave = {
     userId: string;
-    timestamp: string;
-    message: string;
+    username: string;
 }
 
 export type SocketEventData = {
