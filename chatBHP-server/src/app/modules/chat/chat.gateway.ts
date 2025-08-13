@@ -21,27 +21,35 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   handleConnection(client: Socket, ...args: any[]): void {
     this.logger.log(`Client connected: ${client.id}`);
-    
-    // Emit userJoin event to all clients
-    this.server.emit('userJoin', {
-      userId: client.id,
-      timestamp: new Date().toISOString(),
-      message: 'A new user joined the chat'
-    });
-    
-    // Send chat history to newly connected client
-    this.sendChatHistory(client);
   }
 
   handleDisconnect(client: Socket): void {
+    this.leaveChat(client, 'unknown');
     this.logger.log(`Client disconnected: ${client.id}`);
-    
-    // Emit userLeave event to all clients
-    this.server.emit('userLeave', {
-      userId: client.id,
-      timestamp: new Date().toISOString(),
-      message: 'A user left the chat'
-    });
+  }
+
+  @SubscribeMessage('joinChat')
+  async handleJoinChat(
+    @MessageBody() data: { username: string },
+    @ConnectedSocket() client: Socket,
+  ): Promise<void> {
+    this.joinChat(client, data.username);
+  }
+
+  private joinChat(client: Socket, username: string): void {
+    this.server.emit('userJoin', { userId: client.id, username });
+  }
+
+  @SubscribeMessage('leaveChat')
+  async handleLeaveChat(
+    @MessageBody() data: { username: string },
+    @ConnectedSocket() client: Socket,
+  ): Promise<void> {
+    this.leaveChat(client, data.username);
+  }
+
+  private leaveChat(client: Socket, username: string): void {
+    this.server.emit('userLeave', { userId: client.id, username });
   }
 
   @SubscribeMessage('sendMessage')
@@ -75,27 +83,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         },
         error: error.message,
       });
-    }
-  }
-
-  @SubscribeMessage('getChatHistory')
-  async handleGetChatHistory(@ConnectedSocket() client: Socket): Promise<void> {
-    try {
-      await this.sendChatHistory(client);
-    } catch (error) {
-      this.logger.error('Error sending chat history:', error);
-      client.emit('error', { message: 'Failed to load chat history' });
-    }
-  }
-
-  private async sendChatHistory(client: Socket): Promise<void> {
-    try {
-      const chatHistory = await this.chatService.getChatHistory();
-      client.emit('chatHistory', chatHistory);
-      this.logger.log(`Sent ${chatHistory.length} messages to client ${client.id}`);
-    } catch (error) {
-      this.logger.error('Error loading chat history:', error);
-      client.emit('chatHistory', []);
     }
   }
 }

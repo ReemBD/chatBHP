@@ -1,7 +1,6 @@
-import { afterRenderEffect, Component, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
+import { afterRenderEffect, Component, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { concatMap, tap } from 'rxjs';
 
 import { ChatService } from '@chat-bhp/chat/data-access';
 import { ToasterService } from '@chat-bhp/ui/toaster';
@@ -29,20 +28,33 @@ export class Chat {
 
   constructor() {
     this.error$
-      .pipe(
-        concatMap(error => this.toasterService.show(error)),
-        takeUntilDestroyed()
-      )
-      .subscribe();
+      .pipe(takeUntilDestroyed())
+      .subscribe((error) => this.toasterService.show(error).subscribe());
+
+    this.chatService.connect$
+      .pipe(takeUntilDestroyed())
+      .subscribe(event => {
+        const message = event.type === 'join' ? `${event.data.username} joined the chat` : `${event.data.username} left the chat`;
+        this.toasterService.show(message).subscribe()
+      });
+
     this.chat$
       .pipe(takeUntilDestroyed())
       .subscribe(chat => this.messages.set(chat));
-    
-      afterRenderEffect(() => {
-        if (this.messages().length > 0) {
-          this.messageList()?.scrollToBottom();
-        }
-      });
+
+    afterRenderEffect(() => {
+      if (this.messages().length > 0) {
+        this.messageList()?.scrollToBottom();
+      }
+    });
+  }
+
+  ngOnInit() {
+    this.chatService.joinChat();
+  }
+
+  ngOnDestroy() {
+    this.chatService.leaveChat();
   }
 
   onSend() {

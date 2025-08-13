@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, filter, map, retry, scan, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { BehaviorSubject, catchError, filter, map, merge, retry, scan, shareReplay, startWith, switchMap, take, tap } from 'rxjs';
 
 import { ChatMessage, SocketEvent } from '@chat-bhp/core/api-types';
 import { USERNAME } from '@chat-bhp/chat/chat-feature'
@@ -44,6 +44,21 @@ export class ChatService {
     ),
   );
 
+  readonly connect$ = merge(
+    this.socketService.getEvent('userJoin').pipe(
+      map(({ data }) => ({ type: 'join', data })),
+    ),
+    this.socketService.getEvent('userLeave').pipe(
+      map(({ data }) => ({ type: 'leave', data })),
+    )
+  );
+
+  readonly connections$ = this.connect$.pipe(
+    map(({ data }) => data.username),
+    scan((acc, curr) => [...acc, curr], [] as string[]),
+    shareReplay(1),
+  );
+
   /**
    * A stream of errors from the server.
    */
@@ -52,23 +67,25 @@ export class ChatService {
     map((state) => state.error),
   );
 
-  private loadHistory() {
-    this.callState$$.next('loading');
-    return this.api.get<ChatMessage[]>(`${this.BASE_URL}/history`).pipe(
-      catchError((error) => {
-        this.callState$$.next({ error: error.message || 'Unknown error' });
-        throw error;
-      }),
-      tap(() => this.callState$$.next('loaded')),
-    );
-  }
-
   /**
    * Send a message to the server.
    * @param message - The message to send.
    */
   sendMessage(message: string) {
     this.socketService.emit('sendMessage', { message, username: this.username });
+  }
+
+  joinChat() {
+    this.socketService.connected$.pipe(
+      filter(connected => connected),
+      take(1),
+      tap(() => { this.socketService.emit('joinChat', { username: this.username }) })
+    )
+      .subscribe();
+  }
+
+  leaveChat() {
+    this.socketService.emit('leaveChat', { username: this.username });
   }
 
   /**
@@ -83,4 +100,17 @@ export class ChatService {
       isSender: true,
     };
   }
+
+
+  private loadHistory() {
+    this.callState$$.next('loading');
+    return this.api.get<ChatMessage[]>(`${this.BASE_URL}/history`).pipe(
+      catchError((error) => {
+        this.callState$$.next({ error: error.message || 'Unknown error' });
+        throw error;
+      }),
+      tap(() => this.callState$$.next('loaded')),
+    );
+  }
+
 }

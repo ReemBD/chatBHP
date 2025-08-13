@@ -1,5 +1,5 @@
 import { inject, Injectable } from "@angular/core";
-import { filter, Observable } from "rxjs";
+import { BehaviorSubject, filter, Observable } from "rxjs";
 import { io, Socket } from "socket.io-client";
 
 import { SocketEvent, SocketEventKeys } from "@chat-bhp/core/api-types";
@@ -8,7 +8,7 @@ import { SOCKET_URL } from "./api-url.token";
 
 
 /**
- * An observable based service to emit and listen to socket events.
+ * An observable based facade to emit and listen to socket events.
  * This enables us to use the socket events stream as an observable and hook into rxjs api.
  * @example
  * ```ts
@@ -21,7 +21,10 @@ import { SOCKET_URL } from "./api-url.token";
     providedIn: 'root'
 })
 export class SocketService extends Observable<SocketEvent> {
-    readonly socket: Socket;
+    private readonly socket: Socket;
+
+    private readonly connected$$ = new BehaviorSubject<boolean>(false);
+    readonly connected$ = this.connected$$.asObservable();
 
     constructor() {
         const url = inject(SOCKET_URL);
@@ -29,6 +32,12 @@ export class SocketService extends Observable<SocketEvent> {
 
         super((subscriber) => {
             this.socket.connect();
+            this.socket.on('connect', () => {
+                this.connected$$.next(true);
+            });
+            this.socket.on('disconnect', () => {
+                this.connected$$.next(false);
+            });
             this.socket.onAny((event, data) => {
                 subscriber.next({ event, data });
             });
