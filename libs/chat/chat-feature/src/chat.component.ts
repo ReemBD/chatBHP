@@ -20,9 +20,7 @@ import { ChatInputComponent } from './chat-input/chat-input.component';
 })
 export class Chat {
   private readonly toasterService = inject(ToasterService);
-  private readonly socketService = inject(SocketService);
   private readonly chatService = inject(ChatService)
-  private readonly username = inject(USERNAME);
   
   readonly messages = signal<ChatMessage[]>([]);
   readonly currentMessage = signal<string>('');
@@ -43,14 +41,9 @@ export class Chat {
   }
 
   onSend() {
-    const tempMessage: ChatMessage = {
-      message: this.currentMessage(),
-      timestamp: new Date().toISOString(),
-      username: this.username,
-      isSender: true,
-    };
+    const tempMessage = this.chatService.createTempMessage(this.currentMessage());
     this.messages.update(messages => [tempMessage, ...messages]);
-    this.socketService.emit('sendMessage', { message: this.currentMessage(), username: this.username });
+    this.chatService.sendMessage(this.currentMessage());
     this.currentMessage.set('');
   }
 }

@@ -10,7 +10,7 @@ import { ApiService, SocketService } from '@chat-bhp/core/data-access';
 })
 export class ChatService {
   private readonly username = inject(USERNAME);
-  private readonly socket$ = inject(SocketService);
+  private readonly socketService = inject(SocketService);
   private readonly api = inject(ApiService);
   private readonly BASE_URL = '/chat';
 
@@ -19,6 +19,9 @@ export class ChatService {
     shareReplay(1)
   );
 
+  /**
+   * A stream of errors from the server.
+   */
   readonly error$ = this.history$.pipe(
     ignoreElements(),
     catchError((error) => {
@@ -26,9 +29,12 @@ export class ChatService {
     }),
   );
 
+  /**
+   * A stream of messages from the server (including the history).
+   */
   readonly chat$ = this.history$.pipe(
     map(history => history.map(message => ({ ...message, isSender: this.username === message.username }))),
-    switchMap((history) => this.socket$
+    switchMap((history) => this.socketService
       .getEvent('receiveMessage')
       .pipe(
         startWith({ data: { message: 'Oh hey there bro!', username: 'Gandalf' } } as SocketEvent<"receiveMessage">),
@@ -38,7 +44,31 @@ export class ChatService {
     ),
   );
 
+  /**
+   * Load the history from the server.
+   */
   loadHistory() {
     return this.api.get<ChatMessage[]>(`${this.BASE_URL}/history`);
+  }
+
+  /**
+   * Send a message to the server.
+   * @param message - The message to send.
+   */
+  sendMessage(message: string) {
+    this.socketService.emit('sendMessage', { message, username: this.username });
+  }
+
+  /**
+   * Create a temporary message for the chat.
+   * Used for optimsitc updates.
+   */
+  createTempMessage(message: string) {
+    return {
+      message,
+      timestamp: new Date().toISOString(),
+      username: this.username,
+      isSender: true,
+    };
   }
 }
