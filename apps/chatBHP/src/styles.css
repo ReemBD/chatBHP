@@ -33,3 +33,14 @@ body {
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(to bottom, #f59e0b, #ea580c, #b45309);
 }
+
+@font-face {
+  font-family: 'Ringbearer Medium';
+  src: url('./assets/fonts/RingbearerMedium.ttf');
+}
+
+@theme {
+  --font-serif: 'Ringbearer Medium', serif;
+
+  --font-heading: var(--font-serif);
+}
