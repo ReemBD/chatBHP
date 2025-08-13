@@ -29,6 +29,9 @@ export class ChatService {
     }),
   );
 
+  private readonly instructions =
+    'Hello There! \n\n If thou seekest the counsel of a wise and ancient wizard, speak thy question boldly.' +
+    'Be it about Angular, React, or the many mysterious arts of the frontend realms, I shall illuminate the path with my staff of knowledge and spells of code.'
   /**
    * A stream of messages from the server (including the history).
    */
@@ -37,7 +40,7 @@ export class ChatService {
     switchMap((history) => this.socketService
       .getEvent('receiveMessage')
       .pipe(
-        startWith({ data: { message: 'Oh hey there bro!', username: 'Gandalf' } } as SocketEvent<"receiveMessage">),
+        startWith({ data: { message: this.instructions, username: 'Gandalf' } } as SocketEvent<"receiveMessage">),
         map(({ data }) => ({ ...data, isSender: this.username === data.username })),
         scan((acc, curr) => [curr, ...acc], history),
       )
