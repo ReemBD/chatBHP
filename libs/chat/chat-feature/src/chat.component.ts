@@ -30,7 +30,7 @@ export class Chat {
   constructor() {
     this.error$
       .pipe(
-        concatMap(error => this.toasterService.show(error.message)),
+        concatMap(error => this.toasterService.show(error)),
         takeUntilDestroyed()
       )
       .subscribe();

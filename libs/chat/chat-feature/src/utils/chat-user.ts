@@ -1,22 +1,39 @@
 /**
- * A reddit like username generator.
+ * A Lord of the Rings themed username generator.
  */
 export function getRandomUsername(): string {
-  const adjectives = [
-    "Fluffy", "Sassy", "Mighty", "Sleepy", "Cheeky", "Witty", "Grumpy",
-    "Happy", "Clever", "Brave", "Fuzzy", "Sneaky", "Chill", "Epic", "Bouncy"
+  const characters = [
+    "Gandalf", "Aragorn", "Legolas", "Gimli", "Frodo", "Sam", "Merry", "Pippin",
+    "Boromir", "Faramir", "Denethor", "Theoden", "Eomer", "Eowyn", "Galadriel",
+    "Elrond", "Arwen", "Celeborn", "Thranduil", "Bilbo", "Gollum", "Sauron",
+    "Saruman", "Wormtongue", "Treebeard", "Tom", "Goldberry", "Radagast"
   ];
 
-  const animals = [
-    "Tiger", "Panda", "Otter", "Llama", "Penguin", "Fox", "Koala",
-    "Eagle", "Shark", "Sloth", "Hedgehog", "Dolphin", "Wolf", "Bear", "Cat"
+  const places = [
+    "Rivendell", "Lothlorien", "Gondor", "Rohan", "Mordor", "Shire", "Bree",
+    "Minas", "Edoras", "Helms", "Isengard", "Moria", "Fangorn", "Weathertop",
+    "Barad", "Osgiliath", "Pelennor", "Ithilien", "Dol", "Cair", "Dale"
   ];
 
-  const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-  const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
+  const creatures = [
+    "Hobbit", "Elf", "Dwarf", "Man", "Wizard", "Orc", "Uruk", "Troll", "Ent",
+    "Eagle", "Horse", "Warg", "Nazgul", "Balrog", "Dragon", "Spider", "Watcher",
+    "Fell", "Maiar", "Istari", "Ranger", "Knight", "Warrior", "Archer"
+  ];
+
+  const randomCharacter = characters[Math.floor(Math.random() * characters.length)];
+  const randomPlace = places[Math.floor(Math.random() * places.length)];
+  const randomCreature = creatures[Math.floor(Math.random() * creatures.length)];
   const randomNumber = Math.floor(1000 + Math.random() * 9000); // 1000–9999
 
-  return `${randomAdjective}${randomAnimal}_${randomNumber}`;
+  const combinations = [
+    `${randomCharacter}_${randomPlace}_${randomNumber}`,
+    `${randomPlace}_${randomCreature}_${randomNumber}`,
+    `${randomCharacter}_${randomCreature}_${randomNumber}`,
+    `${randomPlace}_${randomCharacter}_${randomNumber}`
+  ];
+
+  return combinations[Math.floor(Math.random() * combinations.length)];
 }
 
 /**

@@ -1,9 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { catchError, ignoreElements, map, of, retry, scan, shareReplay, startWith, switchMap } from 'rxjs';
+import { BehaviorSubject, catchError, filter, map, retry, scan, shareReplay, startWith, switchMap, tap } from 'rxjs';
 
 import { ChatMessage, SocketEvent } from '@chat-bhp/core/api-types';
 import { USERNAME } from '@chat-bhp/chat/chat-feature'
 import { ApiService, SocketService } from '@chat-bhp/core/data-access';
+
+type CallState = 'init' | 'loading' | 'loaded' | { error: string };
 
 @Injectable({
   providedIn: 'root',
@@ -14,24 +16,19 @@ export class ChatService {
   private readonly api = inject(ApiService);
   private readonly BASE_URL = '/chat';
 
+  private readonly instructions =
+    'Hello There! \n\n If thou seekest the counsel of a wise and ancient wizard, speak thy question boldly.' +
+    'Be it about Angular, React, or the many mysterious arts of the frontend realms, I shall illuminate the path with my staff of knowledge and spells of code.'
+
+
+  private readonly callState$$ = new BehaviorSubject<CallState>('init');
+  readonly callState$ = this.callState$$.asObservable();
+
   private readonly history$ = this.loadHistory().pipe(
     retry(3),
     shareReplay(1)
   );
 
-  /**
-   * A stream of errors from the server.
-   */
-  readonly error$ = this.history$.pipe(
-    ignoreElements(),
-    catchError((error) => {
-      return of(error);
-    }),
-  );
-
-  private readonly instructions =
-    'Hello There! \n\n If thou seekest the counsel of a wise and ancient wizard, speak thy question boldly.' +
-    'Be it about Angular, React, or the many mysterious arts of the frontend realms, I shall illuminate the path with my staff of knowledge and spells of code.'
   /**
    * A stream of messages from the server (including the history).
    */
@@ -48,10 +45,22 @@ export class ChatService {
   );
 
   /**
-   * Load the history from the server.
+   * A stream of errors from the server.
    */
-  loadHistory() {
-    return this.api.get<ChatMessage[]>(`${this.BASE_URL}/history`);
+  readonly error$ = this.callState$.pipe(
+    filter((state) => typeof state === 'object'),
+    map((state) => state.error),
+  );
+
+  private loadHistory() {
+    this.callState$$.next('loading');
+    return this.api.get<ChatMessage[]>(`${this.BASE_URL}/history`).pipe(
+      catchError((error) => {
+        this.callState$$.next({ error: error.message || 'Unknown error' });
+        throw error;
+      }),
+      tap(() => this.callState$$.next('loaded')),
+    );
   }
 
   /**
