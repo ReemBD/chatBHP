@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, input, viewChild } from '@angular/core';
 
 import { ChatMessageComponent } from '../chat-message/chat-message.component';
 import { ChatMessage } from '../models/chat';
@@ -12,4 +12,9 @@ import { ChatMessage } from '../models/chat';
 })
 export class ChatMessageListComponent {
   readonly messages = input.required<ChatMessage[]>();
+  private readonly scrollArea = viewChild<ElementRef<HTMLDivElement>>('scrollArea');
+
+  scrollToBottom() {
+    this.scrollArea()?.nativeElement.scrollTo({ top: this.scrollArea()?.nativeElement.scrollHeight, behavior: 'smooth' });
+  }
 }

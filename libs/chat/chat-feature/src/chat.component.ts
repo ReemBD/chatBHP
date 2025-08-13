@@ -1,10 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
+import { afterRenderEffect, Component, effect, ElementRef, inject, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { concatMap } from 'rxjs';
+import { concatMap, tap } from 'rxjs';
 
-import { SocketService } from '@chat-bhp/core/data-access';
-import { USERNAME } from '@chat-bhp/chat/chat-feature';
 import { ChatService } from '@chat-bhp/chat/data-access';
 import { ToasterService } from '@chat-bhp/ui/toaster';
 
@@ -19,8 +17,10 @@ import { ChatInputComponent } from './chat-input/chat-input.component';
 })
 export class Chat {
   readonly toasterService = inject(ToasterService);
-  private readonly chatService = inject(ChatService)
-  
+  private readonly chatService = inject(ChatService);
+
+  private readonly messageList = viewChild<ChatMessageListComponent>(ChatMessageListComponent);
+
   readonly messages = signal<ChatMessage[]>([]);
   readonly currentMessage = signal<string>('');
 
@@ -37,6 +37,12 @@ export class Chat {
     this.chat$
       .pipe(takeUntilDestroyed())
       .subscribe(chat => this.messages.set(chat));
+    
+      afterRenderEffect(() => {
+        if (this.messages().length > 0) {
+          this.messageList()?.scrollToBottom();
+        }
+      });
   }
 
   onSend() {

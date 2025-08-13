@@ -42,7 +42,7 @@ export class ChatService {
       .pipe(
         startWith({ data: { message: this.instructions, username: 'Gandalf' } } as SocketEvent<"receiveMessage">),
         map(({ data }) => ({ ...data, isSender: this.username === data.username })),
-        scan((acc, curr) => [curr, ...acc], history),
+        scan((acc, curr) => [...acc, curr], history),
       )
     ),
   );

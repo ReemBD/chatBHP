@@ -1,8 +1,9 @@
-import { Component, model, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, model, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonDirective } from '@chat-bhp/ui/button';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'bhp-chat-input',
   templateUrl: './chat-input.component.html',
   standalone: true,
