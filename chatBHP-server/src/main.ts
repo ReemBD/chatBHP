@@ -18,7 +18,7 @@ async function bootstrap() {
   });
 
   if (process.env.NODE_ENV === 'production') {
-    app.useStaticAssets(join(__dirname, 'static'));
+    app.useStaticAssets(join(__dirname, 'static/browser'));
   }
 
   // const globalPrefix = 'api';
