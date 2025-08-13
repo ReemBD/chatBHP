@@ -13,21 +13,22 @@ import { ChatMessageListComponent } from './chat-message-list/chat-message-list.
 import { ChatInputComponent } from './chat-input/chat-input.component';
 
 @Component({
-  selector: 'bhp-chat-feature',
+  selector: 'bhp-chat',
   imports: [CommonModule, ChatMessageListComponent, ChatInputComponent],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.css',
 })
 export class Chat {
-  readonly toasterService = inject(ToasterService);
+  private readonly toasterService = inject(ToasterService);
+  private readonly socketService = inject(SocketService);
   private readonly chatService = inject(ChatService)
-  private readonly socket$ = inject(SocketService);
   private readonly username = inject(USERNAME);
-
-  readonly error$ = this.chatService.error$;
-
+  
   readonly messages = signal<ChatMessage[]>([]);
   readonly currentMessage = signal<string>('');
+
+  private readonly error$ = this.chatService.error$;
+  private readonly chat$ = this.chatService.chat$;
 
   constructor() {
     this.error$
@@ -36,9 +37,9 @@ export class Chat {
         takeUntilDestroyed()
       )
       .subscribe();
-    this.chatService.chat$
+    this.chat$
       .pipe(takeUntilDestroyed())
-      .subscribe(chat => this.messages.set(chat))
+      .subscribe(chat => this.messages.set(chat));
   }
 
   onSend() {
@@ -47,9 +48,9 @@ export class Chat {
       timestamp: new Date().toISOString(),
       username: this.username,
       isSender: true,
-    }
+    };
     this.messages.update(messages => [tempMessage, ...messages]);
-    this.socket$.emit('sendMessage', { message: this.currentMessage(), username: this.username });
+    this.socketService.emit('sendMessage', { message: this.currentMessage(), username: this.username });
     this.currentMessage.set('');
   }
 }
