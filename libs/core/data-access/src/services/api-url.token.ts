@@ -1,5 +1,11 @@
 import { InjectionToken } from '@angular/core';
 
-export const API_URL = new InjectionToken<string>('API_URL');
+/**
+ * The api url of the server.
+ */
+export const API_URL = new InjectionToken<string>('The api url of the server.');
 
-export const SOCKET_URL = new InjectionToken<string>('SOCKET_URL');
+/**
+ * The socket url of the server.
+ */
+export const SOCKET_URL = new InjectionToken<string>('The socket url of the server.');

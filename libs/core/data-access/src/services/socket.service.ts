@@ -7,6 +7,16 @@ import { SocketEvent, SocketEventKeys } from "@chat-bhp/core/api-types";
 import { SOCKET_URL } from "./api-url.token";
 
 
+/**
+ * An observable based service to emit and listen to socket events.
+ * This enables us to use the socket events stream as an observable and hook into rxjs api.
+ * @example
+ * ```ts
+ * const socketService = inject(SocketService);
+ * socketService.emit('sendMessage', { message: 'Hello, world!' });
+ * socketService.getEvent('receiveMessage').subscribe((event) => {
+ *  console.log(event);
+ */
 @Injectable({
     providedIn: 'root'
 })
@@ -31,10 +41,20 @@ export class SocketService extends Observable<SocketEvent> {
         this.socket = socket;
     }
 
+    /**
+     * Get an event from the socket.
+     * @param event - The event to get.
+     * @returns An observable of the event.
+     */
     getEvent<T extends SocketEventKeys>(event: T): Observable<SocketEvent<T>> {
         return this.pipe(filter(({ event: e }) => e === event)) as Observable<SocketEvent<T>>;
     }
 
+    /**
+     * Emit an event to the socket.
+     * @param event - The event to emit.
+     * @param data - The data to emit.
+     */
     emit(event: string, data: any) {
         this.socket.emit(event, data);
     }
