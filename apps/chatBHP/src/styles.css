@@ -22,9 +22,14 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    @apply bg-gray-700;
+    @apply bg-amber-900;
 }
 
 ::-webkit-scrollbar-thumb {
-    @apply bg-gray-600;
+    background: linear-gradient(to bottom, #fbbf24, #f97316, #d97706);
+    @apply rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(to bottom, #f59e0b, #ea580c, #b45309);
 }
