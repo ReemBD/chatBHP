@@ -8,7 +8,7 @@ export class AppController {
   @Get()
   root(@Res() res: Response) {
     if (process.env.NODE_ENV === 'production') {
-      res.sendFile(join(__dirname, '..', 'static', 'index.html'));
+      res.sendFile(join(process.cwd(), 'dist/apps/chatBHP-server/static/index.html'));
     }
   }
 }
