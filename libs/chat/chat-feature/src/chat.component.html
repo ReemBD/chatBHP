@@ -1,7 +1,15 @@
 <div class="h-full flex flex-col max-w-4xl mx-auto bg-gray-800 shadow-lg rounded-lg">
-  <div class="flex-1 overflow-y-auto">
+
+  @if (isLoading()) {
+  <div class="bg-gray-900 flex-1 flex items-center justify-center">
+    <bhp-loader></bhp-loader>
+  </div>
+  } @else {
+  <div class="flex-1 overflow-y-auto bg-gray-900">
     <bhp-chat-message-list [messages]="messages()"></bhp-chat-message-list>
   </div>
+  }
+
   <div class="p-2">
     <bhp-chat-input [(message)]="currentMessage" (send)="onSend()"></bhp-chat-input>
   </div>

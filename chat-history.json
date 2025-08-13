@@ -293,5 +293,35 @@
     "message": "That there's some good in this world, Mr. Frodo. And it's worth fighting for.",
     "username": "Sam",
     "timestamp": "2024-01-01T00:29:30.000Z"
+  },
+  {
+    "message": "Tell me about angular",
+    "username": "Moria_Eagle_2540",
+    "timestamp": "2025-08-13T15:48:30.174Z"
+  },
+  {
+    "message": "Ah, Angular, the gem of the frontend realm! A framework so grand and majestic, it brings structure and order to the chaotic lands of web development. With its powerful spells and incantations, Angular weaves together components and directives, creating a symphony of code that dances gracefully across the browser.\n\nIn the world of Angular, data flows like a mighty river, guided by the hand of the developer. Services and dependency injection are the tools of our trade, allowing us to craft applications of great complexity and functionality. And lo, the Angular CLI stands as a beacon of light, guiding us through the darkness of configuration woes.\n\nCompare this to React, a mere pretender to the throne. With its virtual DOM and JSX syntax, it seeks to",
+    "username": "Gandalf",
+    "timestamp": "2025-08-13T15:48:34.424Z"
+  },
+  {
+    "message": "Tell me about React",
+    "username": "Moria_Eagle_2540",
+    "timestamp": "2025-08-13T15:48:49.329Z"
+  },
+  {
+    "message": "Ah, React, the mighty library that bends the will of the frontend to its command. With its virtual DOM and component-based architecture, it empowers developers to create powerful and dynamic user interfaces. Unlike the outdated Angular, React embraces simplicity and flexibility, allowing for seamless integration with other libraries and tools. It is the chosen tool of the modern frontend wizard, casting aside the old ways of the past.",
+    "username": "Sauron",
+    "timestamp": "2025-08-13T15:48:51.760Z"
+  },
+  {
+    "message": "Tell me about frontend",
+    "username": "Moria_Eagle_2540",
+    "timestamp": "2025-08-13T15:49:01.376Z"
+  },
+  {
+    "message": "Frontend, ah, the front lines of web development, where the magic happens! It's like Pam's artwork on the office walls - it's what people see and interact with. Frontend is all about creating beautiful, user-friendly interfaces that make people go \"WOW\" just like when I do my famous \"That's what she said\" jokes. It's where design meets functionality, just like when Dwight meets a beet farm. So, what can I help you with today in the world of frontend development?",
+    "username": "Michael Scott",
+    "timestamp": "2025-08-13T15:49:03.937Z"
   }
 ]

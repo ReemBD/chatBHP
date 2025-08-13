@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, filter, map, merge, retry, scan, shareReplay, startWith, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, catchError, delay, filter, map, merge, retry, scan, shareReplay, startWith, switchMap, take, tap } from 'rxjs';
 
 import { ChatMessage, SocketEvent } from '@chat-bhp/core/api-types';
 import { USERNAME } from '@chat-bhp/chat/chat-feature'
@@ -105,6 +105,8 @@ export class ChatService {
   private loadHistory() {
     this.callState$$.next('loading');
     return this.api.get<ChatMessage[]>(`${this.BASE_URL}/history`).pipe(
+      // Mock a delay to simulate a loading state
+      delay(2000),
       catchError((error) => {
         this.callState$$.next({ error: error.message || 'Unknown error' });
         throw error;

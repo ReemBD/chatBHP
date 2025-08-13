@@ -1,7 +1,7 @@
 import { afterRenderEffect, Component, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { filter, timer } from 'rxjs';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { filter, map, timer } from 'rxjs';
 
 import { ChatService } from '@chat-bhp/chat/data-access';
 import { ToasterService } from '@chat-bhp/ui/toaster';
@@ -10,10 +10,11 @@ import { ChatMessage } from './models/chat';
 import { ChatMessageListComponent } from './chat-message-list/chat-message-list.component';
 import { ChatInputComponent } from './chat-input/chat-input.component';
 import { USERNAME } from './tokens/username.token';
+import { LoaderComponent } from '@chat-bhp/ui/loader';
 
 @Component({
   selector: 'bhp-chat',
-  imports: [CommonModule, ChatMessageListComponent, ChatInputComponent],
+  imports: [CommonModule, ChatMessageListComponent, ChatInputComponent, LoaderComponent],
   templateUrl: './chat.component.html',
 })
 export class Chat implements OnInit, OnDestroy {
@@ -25,6 +26,7 @@ export class Chat implements OnInit, OnDestroy {
 
   readonly messages = signal<ChatMessage[]>([]);
   readonly currentMessage = signal<string>('');
+  readonly isLoading = toSignal(this.chatService.callState$.pipe(map(state => state === 'loading')));
 
   private readonly error$ = this.chatService.error$;
   private readonly chat$ = this.chatService.chat$;
