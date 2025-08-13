@@ -29,26 +29,30 @@ To test the real-time chat functionality with multiple clients:
 
 ### Testing the AI Bot
 
-The Gandalf/Sauron/Michael Scott AI bot is designed to help with frontend and Angular questions. Try asking:
+The AI bot has multiple personalities that respond to different types of questions:
 
-**Angular Questions:**
+**Gandalf** answers Angular questions:
 - "How do I use Angular signals?"
 - "What's the difference between template-driven and reactive forms?"
 - "How do I implement lazy loading in Angular?"
 - "What are Angular lifecycle hooks?"
 - "How do I use Angular's new control flow syntax?"
 
-**Frontend Development:**
+**Sauron** answers React questions:
+- "How do I use React hooks?"
+- "What's the difference between useState and useReducer?"
+- "How do I implement context in React?"
+- "What are React lifecycle methods?"
+- "How do I use React Router?"
+
+**Michael Scott** answers general frontend questions:
 - "What are the benefits of using Tailwind CSS?"
 - "How do I implement real-time features with WebSockets?"
-- "What's the best way to handle state management in Angular?"
-- "How do I optimize Angular bundle size?"
-- "What are some Angular performance best practices?"
-
-**General Programming:**
+- "What's the best way to handle state management?"
+- "How do I optimize bundle size?"
+- "What are some performance best practices?"
 - "How do I debug WebSocket connections?"
-- "What are some common Angular debugging techniques?"
-- "How do I implement error handling in Angular services?"
+- "How do I implement error handling in services?"
 
 ## 🚀 Quick Start
 
