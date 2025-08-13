@@ -22,7 +22,7 @@ async function bootstrap() {
     app.useStaticAssets(join(__dirname, 'static/browser'));
     
     // Serve Angular app for all unknown routes (SPA fallback)
-    app.use('*', (req: any, res: Response) => {
+    app.use(/.*/, (req: any, res: Response) => {
       res.sendFile(join(__dirname, 'static/browser/index.html'));
     });
   }
