@@ -1,6 +1,6 @@
-import { Component, ElementRef, inject, input } from "@angular/core";
+import { Component, ElementRef, inject, input, OnDestroy, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { fromEvent, Observer, timer } from "rxjs";
+import { fromEvent, Observer, Subject, timer } from "rxjs";
 import { repeatWhen, takeUntil, tap } from "rxjs/operators";
 
 @Component({
@@ -8,8 +8,9 @@ import { repeatWhen, takeUntil, tap } from "rxjs/operators";
   selector: "bhp-toaster",
   templateUrl: "./toaster.html"
 })
-export class ToasterComponent<T> {
+export class ToasterComponent<T> implements OnInit, OnDestroy {
   
+  private readonly destroy$ = new Subject<void>();
   private readonly elementRef = inject(ElementRef);
 
   readonly observer = input.required<Observer<T>>();
@@ -29,5 +30,14 @@ export class ToasterComponent<T> {
 
   close() {
     this.observer().complete();
+  }
+
+  ngOnInit() {
+    this.close$.pipe(takeUntil(this.destroy$)).subscribe();
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }
