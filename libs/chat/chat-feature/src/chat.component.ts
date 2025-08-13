@@ -16,7 +16,6 @@ import { ChatInputComponent } from './chat-input/chat-input.component';
   selector: 'bhp-chat',
   imports: [CommonModule, ChatMessageListComponent, ChatInputComponent],
   templateUrl: './chat.component.html',
-  styleUrl: './chat.component.css',
 })
 export class Chat {
   private readonly toasterService = inject(ToasterService);
