@@ -2,6 +2,13 @@ import { computed, Directive, input } from '@angular/core';
 
 type ButtonVariant = 'primary' | 'secondary';
 
+/**
+ * A button directive.
+ * @example
+ * ```html
+ * <button bhp-button>Click me</button>
+ * ```
+ */
 @Directive({
   selector: 'button[bhp-button]',
   exportAs: 'bhpButton',
