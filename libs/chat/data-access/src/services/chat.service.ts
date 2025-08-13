@@ -23,6 +23,11 @@ export class ChatService {
 
   private readonly callState$$ = new BehaviorSubject<CallState>('init');
   readonly callState$ = this.callState$$.asObservable();
+  readonly isLoading$ = this.callState$.pipe(map(state => state === 'loading'));
+  readonly error$ = this.callState$.pipe(
+    filter((state) => typeof state === 'object'),
+    map((state) => state.error),
+  );
 
   private readonly history$ = this.loadHistory().pipe(
     retry(3),
@@ -59,13 +64,7 @@ export class ChatService {
     shareReplay(1),
   );
 
-  /**
-   * A stream of errors from the server.
-   */
-  readonly error$ = this.callState$.pipe(
-    filter((state) => typeof state === 'object'),
-    map((state) => state.error),
-  );
+
 
   /**
    * Send a message to the server.

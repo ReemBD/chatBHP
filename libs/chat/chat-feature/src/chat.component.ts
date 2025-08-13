@@ -5,12 +5,12 @@ import { filter, map, timer } from 'rxjs';
 
 import { ChatService } from '@chat-bhp/chat/data-access';
 import { ToasterService } from '@chat-bhp/ui/toaster';
+import { LoaderComponent } from '@chat-bhp/ui/loader';
 
 import { ChatMessage } from './models/chat';
 import { ChatMessageListComponent } from './chat-message-list/chat-message-list.component';
 import { ChatInputComponent } from './chat-input/chat-input.component';
 import { USERNAME } from './tokens/username.token';
-import { LoaderComponent } from '@chat-bhp/ui/loader';
 
 @Component({
   selector: 'bhp-chat',
@@ -18,7 +18,7 @@ import { LoaderComponent } from '@chat-bhp/ui/loader';
   templateUrl: './chat.component.html',
 })
 export class Chat implements OnInit, OnDestroy {
-  readonly toasterService = inject(ToasterService);
+  private readonly toasterService = inject(ToasterService);
   private readonly chatService = inject(ChatService);
   private readonly username = inject(USERNAME);
 
@@ -26,16 +26,18 @@ export class Chat implements OnInit, OnDestroy {
 
   readonly messages = signal<ChatMessage[]>([]);
   readonly currentMessage = signal<string>('');
-  readonly isLoading = toSignal(this.chatService.callState$.pipe(map(state => state === 'loading')));
+  readonly isLoading = toSignal(this.chatService.isLoading$);
 
   private readonly error$ = this.chatService.error$;
   private readonly chat$ = this.chatService.chat$;
 
   constructor() {
+    // Show errors in the toaster
     this.error$
       .pipe(takeUntilDestroyed())
       .subscribe((error) => this.toasterService.show(error).subscribe());
 
+    // Show join/leave messages in the toaster
     this.chatService.connect$
       .pipe(
         takeUntilDestroyed(),
@@ -46,10 +48,12 @@ export class Chat implements OnInit, OnDestroy {
         this.toasterService.show(message).subscribe()
       });
 
+    // Update the messages when the chat is updated
     this.chat$
       .pipe(takeUntilDestroyed())
       .subscribe(chat => this.messages.set(chat));
 
+    // Scroll to the bottom of the message list when the messages change
     afterRenderEffect(() => {
       if (this.messages().length > 0) {
         this.messageList()?.scrollToBottom();
@@ -58,6 +62,7 @@ export class Chat implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // TODO: Fix inconsistencies in the userJoin emission without the delay.
     timer(2000).subscribe(() => this.chatService.joinChat());
   }
 

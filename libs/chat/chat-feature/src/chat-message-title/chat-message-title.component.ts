@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ChatMessage } from '../models/chat';
 import { isChatBotName } from '@chat-bhp/core/api-types';
+
+import { ChatMessage } from '../models/chat';
 
 @Component({
   changeDetection: ChangeDetectionStrategy.OnPush,
