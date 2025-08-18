@@ -23,9 +23,21 @@ export type SocketEventData = {
     'messageError': MessageError;
     'userJoin': UserJoin;
     'userLeave': UserLeave;
+    'connect': void;
+    'disconnect': void;
 }
 
 export type SocketEventKeys = keyof SocketEventData;
 
 export type SocketEvent<T extends SocketEventKeys = SocketEventKeys> =
     | { event: T; data: SocketEventData[T] };
+
+export const SOCKET_EVENTS: Record<SocketEventKeys, SocketEventKeys> = {
+    'chatHistory': 'chatHistory',
+    'receiveMessage': 'receiveMessage',
+    'messageError': 'messageError',
+    'userJoin': 'userJoin',
+    'userLeave': 'userLeave',
+    'connect': 'connect',
+    'disconnect': 'disconnect',
+}
