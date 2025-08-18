@@ -1,0 +1,14 @@
+@theme {
+  --font-logo: 'Ringbearer Medium', serif;
+  --font-sans: 'Inter', sans-serif;
+  --font-serif: 'Times New Roman', Times, serif;
+
+  --color-lotc-primary: var(--color-amber-500);
+  --color-lotc-primary-dark2: var(--color-amber-600);
+  --color-lotc-primary-dark: oklch(from var(--color-lotc-primary) calc(l - 0.3) c h);
+  --color-lotc-primary-light: var(--color-amber-400);
+
+  --color-lotc-secondary: var(--color-gray-900);
+  --color-lotc-secondary-dark: var(--color-gray-800);
+  --color-lotc-secondary-light: var(--color-gray-700);
+}
