@@ -17,44 +17,41 @@ export type UserLeave = {
     username: string;
 }
 
-export type SocketServerEventData = {
-    'chatHistory': ChatMessage[];
-    'receiveMessage': ChatMessage;
-    'messageError': MessageError;
-    'userJoin': UserJoin;
-    'userLeave': UserLeave;
-    'connect': void;
-    'disconnect': void;
-}
-
-export type SocketServerEventKeys = keyof SocketServerEventData;
-
-export type SocketServerEvent<T extends SocketServerEventKeys = SocketServerEventKeys> =
-    | { event: T; data: SocketServerEventData[T] };
-
-export const SOCKET_SERVER_EVENTS: Record<SocketServerEventKeys, SocketServerEventKeys> = {
+// Unified socket events with neutral names
+export const SOCKET_EVENTS = {
     'chatHistory': 'chatHistory',
-    'receiveMessage': 'receiveMessage',
-    'messageError': 'messageError',
-    'userJoin': 'userJoin',
-    'userLeave': 'userLeave',
+    'chatMessage': 'chatMessage',
+    'chatError': 'chatError',
+    'chatJoin': 'chatJoin',
+    'chatLeave': 'chatLeave',
     'connect': 'connect',
     'disconnect': 'disconnect',
+} as const;
+
+export type SocketEvents = typeof SOCKET_EVENTS;
+export type SocketEventKeys = SocketEvents[keyof SocketEvents];
+
+// Event data types for both client and server
+export type SocketEventData = {
+    [SOCKET_EVENTS.chatHistory]: ChatMessage[];
+    [SOCKET_EVENTS.chatMessage]: ChatMessage;
+    [SOCKET_EVENTS.chatError]: MessageError;
+    [SOCKET_EVENTS.chatJoin]: UserJoin;
+    [SOCKET_EVENTS.chatLeave]: UserLeave;
+    [SOCKET_EVENTS.connect]: void;
+    [SOCKET_EVENTS.disconnect]: void;
 }
 
+// Client event data (what client sends)
 export type SocketClientEventData = {
-    'sendMessage': Omit<ChatMessage, 'timestamp'>;
-    'joinChat': Omit<UserJoin, 'userId'>;
-    'leaveChat': Omit<UserLeave, 'userId'>;
+    [SOCKET_EVENTS.chatMessage]: Omit<ChatMessage, 'timestamp'>;
+    [SOCKET_EVENTS.chatJoin]: Omit<UserJoin, 'userId'>;
+    [SOCKET_EVENTS.chatLeave]: Omit<UserLeave, 'userId'>;
 }
 
 export type SocketClientEventKeys = keyof SocketClientEventData;
 
-export type SocketClientEvent<T extends SocketClientEventKeys = SocketClientEventKeys> =
-    | { event: T; data: SocketClientEventData[T] };
+// Event types
+export type SocketEvent<T extends SocketEventKeys = SocketEventKeys> = { event: T; data: SocketEventData[T] };
 
-export const SOCKET_OUTPUT_EVENTS: Record<SocketClientEventKeys, SocketClientEventKeys> = {
-    'sendMessage': 'sendMessage',
-    'joinChat': 'joinChat',
-    'leaveChat': 'leaveChat',
-}
+export type SocketClientEvent<T extends SocketClientEventKeys = SocketClientEventKeys> = { event: T; data: SocketClientEventData[T] };

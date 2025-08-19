@@ -1,8 +1,8 @@
-import { inject, Injectable } from "@angular/core";
+import { inject, Injectable, OnDestroy } from "@angular/core";
 import { fromEvent, map, merge, Observable, share, startWith, Subject } from "rxjs";
 import { io, Socket } from "socket.io-client";
 
-import { SOCKET_SERVER_EVENTS, SocketServerEvent, SocketServerEventKeys, SocketClientEvent } from "@chat-bhp/core/api-types";
+import { SOCKET_EVENTS, SocketEvent, SocketEventKeys, SocketClientEvent } from "@chat-bhp/core/api-types";
 
 import { SOCKET_URL } from "./api-url.token";
 
@@ -13,14 +13,15 @@ import { SOCKET_URL } from "./api-url.token";
  * @example
  * ```ts
  * const socketService = inject(SocketService);
- * socketService.emit('sendMessage', { message: 'Hello, world!' });
- * socketService.getEvent('receiveMessage').subscribe((event) => {
+ * socketService.next({ event: 'chatMessage', data: { message: 'Hello, world!' } });
+ * socketService.getEvent(SOCKET_EVENTS.chatMessage).subscribe((event) => {
  *  console.log(event);
+ * });
  */
 @Injectable({
     providedIn: 'root'
 })
-export class SocketService extends Subject<SocketServerEvent> {
+export class SocketService extends Subject<SocketEvent> implements OnDestroy {
     private readonly socket: Socket;
 
     readonly connected$;
@@ -38,8 +39,8 @@ export class SocketService extends Subject<SocketServerEvent> {
 
         this.socket = socket;
         this.connected$ = merge(
-            fromEvent(this.socket, SOCKET_SERVER_EVENTS.connect).pipe(map(() => true)),
-            fromEvent(this.socket, SOCKET_SERVER_EVENTS.disconnect).pipe(map(() => false)),
+            fromEvent(this.socket, SOCKET_EVENTS.connect).pipe(map(() => true)),
+            fromEvent(this.socket, SOCKET_EVENTS.disconnect).pipe(map(() => false)),
         ).pipe(
             startWith(socket.connected),
             share()
@@ -61,7 +62,7 @@ export class SocketService extends Subject<SocketServerEvent> {
      * @param event - The event to get.
      * @returns An observable of the event.
      */
-    getEvent<T extends SocketServerEventKeys>(event: T): Observable<SocketServerEvent<T>> {
-        return fromEvent(this.socket, event).pipe(map((data) => ({ event, data }))) as Observable<SocketServerEvent<T>>;
+    getEvent<T extends SocketEventKeys>(event: T): Observable<SocketEvent<T>> {
+        return fromEvent(this.socket, event).pipe(map((data) => ({ event, data }))) as Observable<SocketEvent<T>>;
     }
 }

@@ -28,7 +28,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     this.logger.log(`Client disconnected: ${client.id}`);
   }
 
-  @SubscribeMessage('joinChat')
+  @SubscribeMessage('chatJoin')
   async handleJoinChat(
     @MessageBody() data: { username: string },
     @ConnectedSocket() client: Socket,
@@ -37,10 +37,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   private joinChat(client: Socket, username: string): void {
-    this.server.emit('userJoin', { userId: client.id, username });
+    this.server.emit('chatJoin', { userId: client.id, username });
   }
 
-  @SubscribeMessage('leaveChat')
+  @SubscribeMessage('chatLeave')
   async handleLeaveChat(
     @MessageBody() data: { username: string },
     @ConnectedSocket() client: Socket,
@@ -49,10 +49,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   private leaveChat(client: Socket, username: string): void {
-    this.server.emit('userLeave', { userId: client.id, username });
+    this.server.emit('chatLeave', { userId: client.id, username });
   }
 
-  @SubscribeMessage('sendMessage')
+  @SubscribeMessage('chatMessage')
   async handleMessage(
     @MessageBody() data: { message: string; username: string },
     @ConnectedSocket() client: Socket,
@@ -64,20 +64,20 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
         message: data.message,
         timestamp: new Date().toISOString(),
       };
-      this.server.emit('receiveMessage', userMessage);
+      this.server.emit('chatMessage', userMessage);
 
       // Process message through chat service
       const aiResponse = await this.chatService.processUserMessage(data.message, data.username);
 
       // Broadcast the AI response
-      aiResponse && this.server.emit('receiveMessage', aiResponse);
+      aiResponse && this.server.emit('chatMessage', aiResponse);
 
       this.logger.log(`AI response sent for message from ${data.username}`);
     } catch (error) {
       this.logger.error('Error handling message:', error);
       
       // Send error message to client
-      this.server.emit('messageError', {
+      this.server.emit('chatError', {
         details: {
           username: data.username,
         },

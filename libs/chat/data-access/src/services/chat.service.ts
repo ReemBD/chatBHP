@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, delay, filter, map, merge, retry, scan, shareReplay, startWith, switchMap, take, tap } from 'rxjs';
 
-import { ChatMessage, SocketServerEvent } from '@chat-bhp/core/api-types';
+import { ChatMessage, SOCKET_EVENTS, SocketEvent } from '@chat-bhp/core/api-types';
 import { USERNAME } from '@chat-bhp/chat/chat-feature'
 import { ApiService, SocketService } from '@chat-bhp/core/data-access';
 
@@ -40,9 +40,9 @@ export class ChatService {
   readonly chat$ = this.history$.pipe(
     map(history => history.map(message => ({ ...message, isSender: this.username === message.username }))),
     switchMap((history) => this.socketService
-      .getEvent('receiveMessage')
+      .getEvent(SOCKET_EVENTS.chatMessage)
       .pipe(
-        startWith({ data: { message: this.instructions, username: 'Gandalf' } } as SocketServerEvent<"receiveMessage">),
+        startWith({ data: { message: this.instructions, username: 'Gandalf' } } as SocketEvent<"chatMessage">),
         map(({ data }) => ({ ...data, isSender: this.username === data.username })),
         scan((acc, curr) => [...acc, curr], history),
       )
@@ -50,10 +50,10 @@ export class ChatService {
   );
 
   readonly connect$ = merge(
-    this.socketService.getEvent('userJoin').pipe(
+    this.socketService.getEvent(SOCKET_EVENTS.chatJoin).pipe(
       map(({ data }) => ({ type: 'join', data })),
     ),
-    this.socketService.getEvent('userLeave').pipe(
+    this.socketService.getEvent(SOCKET_EVENTS.chatLeave).pipe(
       map(({ data }) => ({ type: 'leave', data })),
     )
   );
@@ -71,20 +71,20 @@ export class ChatService {
    * @param message - The message to send.
    */
   sendMessage(message: string) {
-    this.socketService.next({ event: 'sendMessage', data: { message, username: this.username } })
+    this.socketService.next({ event: SOCKET_EVENTS.chatMessage, data: { message, username: this.username } })
   }
 
   joinChat() {
     this.socketService.connected$.pipe(
       filter(connected => connected),
       take(1),
-      tap(() => { this.socketService.next({ event: 'joinChat', data: { username: this.username } }) })
+      tap(() => { this.socketService.next({ event: SOCKET_EVENTS.chatJoin, data: { username: this.username } }) })
     )
       .subscribe();
   }
 
   leaveChat() {
-    this.socketService.next({ event: 'leaveChat', data: { username: this.username } });
+    this.socketService.next({ event: SOCKET_EVENTS.chatLeave, data: { username: this.username } });
   }
 
   /**
