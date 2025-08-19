@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { BehaviorSubject, catchError, delay, filter, map, merge, retry, scan, shareReplay, startWith, switchMap, take, tap } from 'rxjs';
 
-import { ChatMessage, SocketEvent } from '@chat-bhp/core/api-types';
+import { ChatMessage, SocketServerEvent } from '@chat-bhp/core/api-types';
 import { USERNAME } from '@chat-bhp/chat/chat-feature'
 import { ApiService, SocketService } from '@chat-bhp/core/data-access';
 
@@ -42,7 +42,7 @@ export class ChatService {
     switchMap((history) => this.socketService
       .getEvent('receiveMessage')
       .pipe(
-        startWith({ data: { message: this.instructions, username: 'Gandalf' } } as SocketEvent<"receiveMessage">),
+        startWith({ data: { message: this.instructions, username: 'Gandalf' } } as SocketServerEvent<"receiveMessage">),
         map(({ data }) => ({ ...data, isSender: this.username === data.username })),
         scan((acc, curr) => [...acc, curr], history),
       )
@@ -71,20 +71,20 @@ export class ChatService {
    * @param message - The message to send.
    */
   sendMessage(message: string) {
-    this.socketService.emit('sendMessage', { message, username: this.username });
+    this.socketService.next({ event: 'sendMessage', data: { message, username: this.username } })
   }
 
   joinChat() {
     this.socketService.connected$.pipe(
       filter(connected => connected),
       take(1),
-      tap(() => { this.socketService.emit('joinChat', { username: this.username }) })
+      tap(() => { this.socketService.next({ event: 'joinChat', data: { username: this.username } }) })
     )
       .subscribe();
   }
 
   leaveChat() {
-    this.socketService.emit('leaveChat', { username: this.username });
+    this.socketService.next({ event: 'leaveChat', data: { username: this.username } });
   }
 
   /**
