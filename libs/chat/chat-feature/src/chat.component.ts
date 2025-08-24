@@ -1,7 +1,7 @@
 import { afterRenderEffect, Component, inject, OnDestroy, OnInit, signal, viewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { filter, map, timer } from 'rxjs';
+import { filter, map, tap, timer } from 'rxjs';
 
 import { ChatService } from '@chat-bhp/chat/data-access';
 import { ToasterService } from '@chat-bhp/ui/toaster';
@@ -34,7 +34,7 @@ export class Chat implements OnInit, OnDestroy {
   constructor() {
     // Show errors in the toaster
     this.error$
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntilDestroyed(), tap(error => console.error(error)))
       .subscribe((error) => this.toasterService.show(error).subscribe());
 
     // Show join/leave messages in the toaster

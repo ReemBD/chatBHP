@@ -2,7 +2,7 @@ import { inject, Injectable, OnDestroy } from "@angular/core";
 import { fromEvent, map, merge, Observable, share, startWith, Subject } from "rxjs";
 import { io, Socket } from "socket.io-client";
 
-import { SOCKET_EVENTS, SocketEvent, SocketEventKeys, SocketClientEvent } from "@chat-bhp/core/api-types";
+import { SERVER_SOCKET_EVENTS, SocketEvent, SocketEventKeys, SocketClientEvent } from "@chat-bhp/core/api-types";
 
 import { SOCKET_URL } from "./api-url.token";
 
@@ -39,8 +39,8 @@ export class SocketService extends Subject<SocketEvent> implements OnDestroy {
 
         this.socket = socket;
         this.connected$ = merge(
-            fromEvent(this.socket, SOCKET_EVENTS.connect).pipe(map(() => true)),
-            fromEvent(this.socket, SOCKET_EVENTS.disconnect).pipe(map(() => false)),
+            fromEvent(this.socket, SERVER_SOCKET_EVENTS.connect).pipe(map(() => true)),
+            fromEvent(this.socket, SERVER_SOCKET_EVENTS.disconnect).pipe(map(() => false)),
         ).pipe(
             startWith(socket.connected),
             share()

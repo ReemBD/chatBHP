@@ -18,7 +18,7 @@ export type UserLeave = {
 }
 
 // Unified socket events with neutral names
-export const SOCKET_EVENTS = {
+export const SERVER_SOCKET_EVENTS = {
     'chatHistory': 'chatHistory',
     'chatMessage': 'chatMessage',
     'chatError': 'chatError',
@@ -28,25 +28,31 @@ export const SOCKET_EVENTS = {
     'disconnect': 'disconnect',
 } as const;
 
-export type SocketEvents = typeof SOCKET_EVENTS;
+export const CLIENT_SOCKET_EVENTS = {
+    'chatMessage': 'client_chatMessage',
+    'chatJoin': 'client_chatJoin',
+    'chatLeave': 'client_chatLeave',
+} as const;
+
+export type SocketEvents = typeof SERVER_SOCKET_EVENTS;
 export type SocketEventKeys = SocketEvents[keyof SocketEvents];
 
 // Event data types for both client and server
 export type SocketEventData = {
-    [SOCKET_EVENTS.chatHistory]: ChatMessage[];
-    [SOCKET_EVENTS.chatMessage]: ChatMessage;
-    [SOCKET_EVENTS.chatError]: MessageError;
-    [SOCKET_EVENTS.chatJoin]: UserJoin;
-    [SOCKET_EVENTS.chatLeave]: UserLeave;
-    [SOCKET_EVENTS.connect]: void;
-    [SOCKET_EVENTS.disconnect]: void;
+    [SERVER_SOCKET_EVENTS.chatHistory]: ChatMessage[];
+    [SERVER_SOCKET_EVENTS.chatMessage]: ChatMessage;
+    [SERVER_SOCKET_EVENTS.chatError]: MessageError;
+    [SERVER_SOCKET_EVENTS.chatJoin]: UserJoin;
+    [SERVER_SOCKET_EVENTS.chatLeave]: UserLeave;
+    [SERVER_SOCKET_EVENTS.connect]: void;
+    [SERVER_SOCKET_EVENTS.disconnect]: void;
 }
 
 // Client event data (what client sends)
 export type SocketClientEventData = {
-    [SOCKET_EVENTS.chatMessage]: Omit<ChatMessage, 'timestamp'>;
-    [SOCKET_EVENTS.chatJoin]: Omit<UserJoin, 'userId'>;
-    [SOCKET_EVENTS.chatLeave]: Omit<UserLeave, 'userId'>;
+    [CLIENT_SOCKET_EVENTS.chatMessage]: Omit<ChatMessage, 'timestamp'>;
+    [CLIENT_SOCKET_EVENTS.chatJoin]: Omit<UserJoin, 'userId'>;
+    [CLIENT_SOCKET_EVENTS.chatLeave]: Omit<UserLeave, 'userId'>;
 }
 
 export type SocketClientEventKeys = keyof SocketClientEventData;
