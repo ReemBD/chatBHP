@@ -25,8 +25,7 @@ export class ChatService {
   readonly callState$ = this.callState$$.asObservable();
   readonly isLoading$ = this.callState$.pipe(map(state => state === 'loading'));
   readonly error$ = this.callState$.pipe(
-    filter((state) => typeof state === 'object'),
-    map((state) => state.error),
+    map((state) => typeof state === 'object' ? state.error : undefined),
   );
 
   private readonly history$ = this.loadHistory().pipe(
