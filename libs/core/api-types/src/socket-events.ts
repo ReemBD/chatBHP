@@ -58,6 +58,6 @@ export type SocketClientEventData = {
 export type SocketClientEventKeys = keyof SocketClientEventData;
 
 // Event types
-export type SocketEvent<T extends SocketEventKeys = SocketEventKeys> = { event: T; data: SocketEventData[T] };
+export type SocketEvent<T extends string = string> = { event: T; data: any };
 
 export type SocketClientEvent<T extends SocketClientEventKeys = SocketClientEventKeys> = { event: T; data: SocketClientEventData[T] };

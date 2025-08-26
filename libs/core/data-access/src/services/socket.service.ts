@@ -2,9 +2,10 @@ import { inject, Injectable, OnDestroy } from "@angular/core";
 import { fromEvent, map, merge, Observable, share, startWith, Subject } from "rxjs";
 import { io, Socket } from "socket.io-client";
 
-import { SERVER_SOCKET_EVENTS, SocketEvent, SocketEventKeys, SocketClientEvent } from "@chat-bhp/core/api-types";
+import { SocketEvent, SocketClientEvent } from "@chat-bhp/core/api-types";
 
 import { SOCKET_URL } from "./api-url.token";
+import { INPUT_SOCKET_EVENTS } from "../tokens/socket-events.token";
 
 /**
  * A Subject based facade to emit and listen to socket events.
@@ -21,7 +22,9 @@ import { SOCKET_URL } from "./api-url.token";
 @Injectable({
     providedIn: 'root'
 })
-export class SocketService extends Subject<SocketEvent> implements OnDestroy {
+export class SocketService<Events extends string = string> extends Subject<SocketEvent<Events>> implements OnDestroy {
+    private readonly inputEvents = inject(INPUT_SOCKET_EVENTS);
+
     private readonly socket: Socket;
 
     readonly connected$;
@@ -39,8 +42,8 @@ export class SocketService extends Subject<SocketEvent> implements OnDestroy {
 
         this.socket = socket;
         this.connected$ = merge(
-            fromEvent(this.socket, SERVER_SOCKET_EVENTS.connect).pipe(map(() => true)),
-            fromEvent(this.socket, SERVER_SOCKET_EVENTS.disconnect).pipe(map(() => false)),
+            fromEvent(this.socket, this.inputEvents['connect']).pipe(map(() => true)),
+            fromEvent(this.socket, this.inputEvents['disconnect']).pipe(map(() => false)),
         ).pipe(
             startWith(socket.connected),
             share()
@@ -62,7 +65,7 @@ export class SocketService extends Subject<SocketEvent> implements OnDestroy {
      * @param event - The event to get.
      * @returns An observable of the event.
      */
-    getEvent<T extends SocketEventKeys>(event: T): Observable<SocketEvent<T>> {
+    getEvent<T extends Events>(event: T): Observable<SocketEvent<T>> {
         return fromEvent(this.socket, event).pipe(map((data) => ({ event, data }))) as Observable<SocketEvent<T>>;
     }
 }
