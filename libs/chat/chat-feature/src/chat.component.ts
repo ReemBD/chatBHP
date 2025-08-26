@@ -62,8 +62,7 @@ export class Chat implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // TODO: Fix inconsistencies in the userJoin emission without the delay.
-    timer(2000).subscribe(() => this.chatService.joinChat());
+    this.chatService.joinChat();
   }
 
   ngOnDestroy() {

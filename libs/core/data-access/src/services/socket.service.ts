@@ -1,5 +1,5 @@
 import { inject, Injectable, OnDestroy } from "@angular/core";
-import { defer, fromEvent, map, merge, Observable, of, share, startWith, Subject } from "rxjs";
+import { BehaviorSubject, defer, fromEvent, map, merge, Observable, of, share, startWith, Subject } from "rxjs";
 import { io, Socket } from "socket.io-client";
 
 import { SocketEvent, SocketClientEvent } from "@chat-bhp/core/api-types";
@@ -27,7 +27,7 @@ export class SocketService<Events extends string = string> extends Subject<Socke
 
     private readonly socket: Socket;
 
-    readonly connected$;
+    readonly connected$ = new BehaviorSubject(false);
 
     constructor() {
         const url = inject(SOCKET_URL);
@@ -41,11 +41,9 @@ export class SocketService<Events extends string = string> extends Subject<Socke
         super();
 
         this.socket = socket;
-        this.connected$ = merge(
-            defer(() => of(socket.connected)),
-            fromEvent(this.socket, this.inputEvents['connect']).pipe(map(() => true)),
-            fromEvent(this.socket, this.inputEvents['disconnect']).pipe(map(() => false)),
-        ).pipe(share());
+
+        socket.on('connect', () => this.connected$.next(true));
+        socket.on('disconnect', () => this.connected$.next(false));
     }
 
     ngOnDestroy() {
