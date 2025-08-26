@@ -1,5 +1,5 @@
 import { inject, Injectable, OnDestroy } from "@angular/core";
-import { fromEvent, map, merge, Observable, share, startWith, Subject } from "rxjs";
+import { defer, fromEvent, map, merge, Observable, of, share, startWith, Subject } from "rxjs";
 import { io, Socket } from "socket.io-client";
 
 import { SocketEvent, SocketClientEvent } from "@chat-bhp/core/api-types";
@@ -42,12 +42,10 @@ export class SocketService<Events extends string = string> extends Subject<Socke
 
         this.socket = socket;
         this.connected$ = merge(
+            defer(() => of(socket.connected)),
             fromEvent(this.socket, this.inputEvents['connect']).pipe(map(() => true)),
             fromEvent(this.socket, this.inputEvents['disconnect']).pipe(map(() => false)),
-        ).pipe(
-            startWith(socket.connected),
-            share()
-        );
+        ).pipe(share());
     }
 
     ngOnDestroy() {

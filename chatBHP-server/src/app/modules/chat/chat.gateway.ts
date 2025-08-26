@@ -34,6 +34,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     @MessageBody() data: { username: string },
     @ConnectedSocket() client: Socket,
   ): Promise<void> {
+    console.log('handleJoinChat', data);
     this.joinChat(client, data.username);
   }
 

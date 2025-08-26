@@ -76,8 +76,9 @@ export class ChatService {
 
   joinChat() {
     this.socketService.connected$.pipe(
+      tap(connected => console.log('joinChat', connected)),
       filter(connected => connected),
-      take(1),
+      take(3),
       tap(() => { this.socketService.next({ event: CLIENT_SOCKET_EVENTS.chatJoin, data: { username: this.username } }) })
     )
       .subscribe();
