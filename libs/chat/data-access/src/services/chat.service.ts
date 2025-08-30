@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
-import { BehaviorSubject, catchError, delay, filter, map, merge, retry, scan, shareReplay, startWith, switchMap, take, tap } from 'rxjs';
+import { BehaviorSubject, catchError, combineLatest, delay, distinctUntilChanged, filter, map, merge, of, retry, scan, shareReplay, startWith, switchMap, take, tap } from 'rxjs';
 
-import { ChatMessage, CLIENT_SOCKET_EVENTS, SERVER_SOCKET_EVENTS, SocketEvent } from '@chat-bhp/core/api-types';
+import { ChatMessage, ChatMappings, CLIENT_SOCKET_EVENTS, SERVER_SOCKET_EVENTS, SocketEvent } from '@chat-bhp/core/api-types';
 import { USERNAME } from '@chat-bhp/chat/chat-feature'
 import { ApiService, SocketService } from '@chat-bhp/core/data-access';
 
@@ -29,9 +29,25 @@ export class ChatService {
     filter(error => !!error),
   );
 
-  private readonly history$ = this.loadHistory().pipe(
-    retry(3),
-    shareReplay(1)
+  private readonly data$ = of(null).pipe(
+    tap(() => this.callState$$.next('loading')),
+    switchMap(() => combineLatest([
+      this.loadHistory().pipe(retry(3)),
+      this.loadChatMappings().pipe(retry(3)),
+    ])),
+    tap(() => this.callState$$.next('loaded')),
+  )
+
+  private readonly chatMappings$ = this.data$.pipe(
+    map(([_, chatMappings]) => chatMappings),
+    distinctUntilChanged(),
+    shareReplay(1),
+  );
+
+  private readonly history$ = this.data$.pipe(
+    map(([history]) => history),
+    distinctUntilChanged(),
+    shareReplay(1),
   );
 
   /**
@@ -63,8 +79,6 @@ export class ChatService {
     scan((acc, curr) => [...acc, curr], [] as string[]),
     shareReplay(1),
   );
-
-
 
   /**
    * Send a message to the server.
@@ -114,4 +128,11 @@ export class ChatService {
     );
   }
 
+  /**
+   * Load chat mappings from the server.
+   * @returns Observable of chat mappings
+   */
+  loadChatMappings() {
+    return this.api.get<ChatMappings>(`${this.BASE_URL}/mappings`);
+  }
 }
